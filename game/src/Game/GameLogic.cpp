@@ -1,5 +1,5 @@
 #include "Game/GameLogic.h"
-#include "Colossus/Render/RendererFactory.h"
+#include "Colossus/Input/Keyboard.h"
 
 using namespace Game;
 

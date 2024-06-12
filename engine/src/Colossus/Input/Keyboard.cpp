@@ -5,7 +5,7 @@ using namespace Colossus;
 
 Keyboard* Keyboard::instance = nullptr;
 
-bool keys[GLFW_KEY_LAST];
+bool keys[CS_KEY_LAST];
 std::vector<int> pressed_keys;
 
 Keyboard::Keyboard() = default;
@@ -19,12 +19,11 @@ Keyboard* Keyboard::getInstance() {
     return instance;
 }
 
-void Keyboard::callback(GLFWwindow* window, int key, int scancode, int action,
-                        int mods) {
-    keys[key] = action != GLFW_RELEASE;
+void Keyboard::callback(int key, int action) {
+    keys[key] = action != CS_RELEASE;
 
     auto it = std::find(pressed_keys.begin(), pressed_keys.end(), key);
-    if (action == GLFW_RELEASE && it != pressed_keys.end()) {
+    if (action == CS_RELEASE && it != pressed_keys.end()) {
         pressed_keys.erase(it);
     }
 }

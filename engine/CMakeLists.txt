@@ -28,7 +28,8 @@ set(ENGINE_HEADERS
         include/Colossus/Render/Window.h)
 
 # Add glad source
-set(GLAD_SOURCE ${CMAKE_CURRENT_SOURCE_DIR}/../external/glad/src/glad.c)
+set(GLAD_SOURCE ${CMAKE_CURRENT_SOURCE_DIR}/../external/glad/src/glad.c
+        include/Colossus/Input/InputCodes.h)
 
 # Add precompiled header sources
 set(PCH_HEADER ${CMAKE_CURRENT_SOURCE_DIR}/include/cspch.h)

@@ -1,11 +1,17 @@
 #include "Colossus/Render/Renderers/OpenGLRenderer.h"
 #include "Colossus/Engine.h"
+#include "Colossus/Input/Keyboard.h"
 
 using namespace Colossus;
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height) {
-    LOG_TRACE("Window", "Resizing to " << width << "x" << height);
+    LOG_TRACE("OpenGL", "Resizing to " << width << "x" << height);
     glViewport(0, 0, width, height);
+}
+
+void keyboard_callback(GLFWwindow* window, int key, int scancode, int action, int mods) {
+    LOG_TRACE("OpenGL", "Passing key callback through abstraction layer");
+    Keyboard::callback(key, action);
 }
 
 bool OpenGLRenderer::initialise() {
@@ -45,7 +51,9 @@ bool OpenGLRenderer::create() {
 
     // Set callbacks
     glfwSetFramebufferSizeCallback(m_Window, framebuffer_size_callback);
-    LOG_INFO("OpenGL", "Successfully set callbacks.");
+    glfwSetKeyCallback(m_Window, keyboard_callback);
+
+    LOG_INFO("OpenGL", "Successfully set callbacks");
 
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
         LOG_ERROR("OpenGL", "Failed to initialise GLAD!");
