@@ -30,18 +30,11 @@ void Engine::initialise(const std::string& window_name) {
     m_IsRunning = true;
 }
 
-void Engine::mainLoop() {
-    while (m_IsRunning) {
-        glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-        m_Window->tick();
-        glfwPollEvents();
-
-        if (Keyboard::isKeyPressed(GLFW_KEY_ESCAPE)) {
-            stop();
-        }
-    }
+void Engine::step() {
+    m_Window->tick();
+    glfwPollEvents();
 }
 
 void Engine::stop() { m_IsRunning = false; }
+
+bool Engine::isRunning() const { return m_IsRunning; }

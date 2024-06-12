@@ -8,5 +8,8 @@ Colossus::Engine* engine = Colossus::Engine::getInstance();
 
 void GameLogic::run() {
     engine->initialise("Heroes of Colossus");
-    engine->mainLoop();
+
+    while (engine->isRunning()) {
+        engine->step();
+    }
 }

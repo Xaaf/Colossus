@@ -20,9 +20,10 @@ class Engine {
         static Engine* getInstance();
 
         void initialise(const std::string& window_name);
-        void mainLoop();
-
+        void step();
         void stop();
+
+        bool isRunning() const;
 };
 }  // namespace Colossus
 
