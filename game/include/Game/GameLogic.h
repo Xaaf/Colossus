@@ -9,7 +9,7 @@ class GameLogic {
         Colossus::Engine* engine;
 
     public:
-        void setup();
+        void setup(const std::string& renderer);
         void run();
 };
 }  // namespace Game

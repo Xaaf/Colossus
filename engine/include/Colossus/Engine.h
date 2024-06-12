@@ -22,7 +22,7 @@ class Engine {
     public:
         static Engine* getInstance();
 
-        void initialise(const std::string& window_name, RendererType type);
+        void initialise(const std::string& window_name, const std::string& renderer);
         void step();
         void stop();
 

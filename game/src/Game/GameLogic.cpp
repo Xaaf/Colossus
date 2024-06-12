@@ -3,9 +3,9 @@
 
 using namespace Game;
 
-void GameLogic::setup() {
+void GameLogic::setup(const std::string& renderer) {
     engine = Colossus::Engine::getInstance();
-    engine->initialise("Heroes of Colossus", Colossus::RendererType::OpenGL);
+    engine->initialise("Heroes of Colossus", renderer);
 
     run();
 }

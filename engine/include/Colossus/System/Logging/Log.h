@@ -5,7 +5,7 @@
 #include "Colors.h"
 #include "LogLevels.h"
 
-#define CURRENT_LOG_LEVEL LOG_LEVEL_TRACE
+#define CURRENT_LOG_LEVEL LOG_LEVEL_DEBUG
 
 #define LOG(level, color, levelStr, tag, message)                        \
     do {                                                                 \

@@ -14,6 +14,8 @@ class RendererFactory {
     public:
         static std::unique_ptr<RendererInterface> createRenderer(
             RendererType type);
+
+        static RendererType stringToRenderType(const std::string& renderer);
 };
 }  // namespace Colossus
 
