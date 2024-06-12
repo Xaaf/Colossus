@@ -17,6 +17,7 @@ class OpenGLRenderer : public RendererInterface {
         bool initialise() override;
         bool create() override;
         void render() override;
+        void stop() override;
 };
 }  // namespace Colossus
 

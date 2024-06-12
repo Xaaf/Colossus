@@ -22,8 +22,9 @@ void Window::create() {
     }
 }
 
-void Window::update() {
-    m_Renderer->render();
-}
+void Window::update() { m_Renderer->render(); }
 
-void Window::close() { LOG_TRACE("Window", "Calling Window::close"); }
+void Window::close() {
+    LOG_TRACE("Window", "Calling Window::close");
+    m_Renderer->stop();
+}

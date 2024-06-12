@@ -27,9 +27,11 @@ void Engine::initialise(const std::string& window_name, const std::string& rende
 
 void Engine::step() {
     m_Window->update();
-//    renderer->render();
 }
 
-void Engine::stop() { m_IsRunning = false; }
+void Engine::stop() {
+    m_IsRunning = false;
+    m_Window->close();
+}
 
 bool Engine::isRunning() const { return m_IsRunning; }

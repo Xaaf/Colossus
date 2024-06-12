@@ -9,6 +9,7 @@ class RendererInterface {
         virtual bool initialise() = 0;
         virtual bool create() = 0;
         virtual void render() = 0;
+        virtual void stop() = 0;
 };
 }  // namespace Colossus
 

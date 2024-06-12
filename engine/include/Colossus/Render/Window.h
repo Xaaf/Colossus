@@ -19,6 +19,7 @@ class Window {
         void create();
         void update();
         void close();
+        void stop();
 };
 }  // namespace Colossus
 
