@@ -1,5 +1,5 @@
-#include "colossus/Engine.h"
-#include "colossus/input/Keyboard.h"
+#include "Colossus/Engine.h"
+#include "Colossus/Input/Keyboard.h"
 
 using namespace Colossus;
 

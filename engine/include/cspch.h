@@ -11,7 +11,7 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
-#include "colossus/system/logging/Log.h"
+#include "Colossus/System/Logging/Log.h"
 
 #endif  // CSPCH_H
 // clang-format on

@@ -1,6 +1,6 @@
-#include "game/GameLogic.h"
-#include "colossus/Engine.h"
-#include "colossus/rendering/RendererFactory.h"
+#include "Game/GameLogic.h"
+#include "Colossus/Engine.h"
+#include "Colossus/Rendering/RendererFactory.h"
 
 using namespace Game;
 

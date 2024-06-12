@@ -11,21 +11,21 @@ include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include)
 
 # Add sources
 set(ENGINE_SOURCES
-        src/colossus/system/Window.cpp
-        src/colossus/Engine.cpp
-        src/colossus/input/Keyboard.cpp
-        src/colossus/rendering/renderers/OpenGLRenderer.cpp
-        src/colossus/rendering/RendererFactory.cpp)
+        src/Colossus/System/Window.cpp
+        src/Colossus/Engine.cpp
+        src/Colossus/Input/Keyboard.cpp
+        src/Colossus/Rendering/Renderers/OpenGLRenderer.cpp
+        src/Colossus/Rendering/RendererFactory.cpp)
 set(ENGINE_HEADERS
-        include/colossus/system/logging/Colors.h
-        include/colossus/system/logging/Log.h
-        include/colossus/system/logging/LogLevels.h
-        include/colossus/system/Window.h
-        include/colossus/Engine.h
-        include/colossus/input/Keyboard.h
-        include/colossus/rendering/RendererInterface.h
-        include/colossus/rendering/renderers/OpenGLRenderer.h
-        include/colossus/rendering/RendererFactory.h)
+        include/Colossus/System/Logging/Colors.h
+        include/Colossus/System/Logging/Log.h
+        include/Colossus/System/Logging/LogLevels.h
+        include/Colossus/System/Window.h
+        include/Colossus/Engine.h
+        include/Colossus/Input/Keyboard.h
+        include/Colossus/Rendering/RendererInterface.h
+        include/Colossus/Rendering/Renderers/OpenGLRenderer.h
+        include/Colossus/Rendering/RendererFactory.h)
 
 # Add glad source
 set(GLAD_SOURCE ${CMAKE_CURRENT_SOURCE_DIR}/../external/glad/src/glad.c)

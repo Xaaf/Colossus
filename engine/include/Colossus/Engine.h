@@ -1,8 +1,8 @@
 #ifndef ENGINE_H
 #define ENGINE_H
 
-#include "colossus/rendering/RendererFactory.h"
-#include "colossus/system/Window.h"
+#include "Colossus/Rendering/RendererFactory.h"
+#include "Colossus/System/Window.h"
 
 namespace Colossus {
 class Engine {

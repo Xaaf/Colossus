@@ -1,4 +1,4 @@
-#include "colossus/input/Keyboard.h"
+#include "Colossus/Input/Keyboard.h"
 #include <algorithm>
 
 using namespace Colossus;

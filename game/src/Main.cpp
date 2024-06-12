@@ -1,4 +1,4 @@
-#include "game/GameLogic.h"
+#include "Game/GameLogic.h"
 
 Game::GameLogic game = Game::GameLogic();
 int main() {

@@ -1,7 +1,7 @@
 #ifndef OPENGLRENDERER_H
 #define OPENGLRENDERER_H
 
-#include "colossus/rendering/RendererInterface.h"
+#include "Colossus/Rendering/RendererInterface.h"
 #include "cspch.h"
 
 namespace Colossus {

@@ -2,7 +2,7 @@
 #define RENDERERFACTORY_H
 
 #include <memory>
-#include "colossus/rendering/RendererInterface.h"
+#include "Colossus/Rendering/RendererInterface.h"
 
 namespace Colossus {
 enum class RendererType {

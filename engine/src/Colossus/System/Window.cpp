@@ -1,7 +1,7 @@
-#include "colossus/system/Window.h"
+#include "Colossus/System/Window.h"
 #include <utility>
-#include "colossus/Engine.h"
-#include "colossus/input/Keyboard.h"
+#include "Colossus/Engine.h"
+#include "Colossus/Input/Keyboard.h"
 
 using namespace Colossus;
 

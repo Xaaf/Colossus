@@ -1,4 +1,4 @@
-#include "colossus/rendering/renderers/OpenGLRenderer.h"
+#include "Colossus/Rendering/Renderers/OpenGLRenderer.h"
 
 using namespace Colossus;
 
