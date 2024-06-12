@@ -3,6 +3,11 @@
 
 using namespace Colossus;
 
+void framebuffer_size_callback(GLFWwindow* window, int width, int height) {
+    LOG_TRACE("Window", "Resizing to " << width << "x" << height);
+    glViewport(0, 0, width, height);
+}
+
 bool OpenGLRenderer::initialise() {
     LOG_TRACE("OpenGL", "Calling OpenGLRenderer::initialise");
 
@@ -39,6 +44,8 @@ bool OpenGLRenderer::create() {
     glfwMakeContextCurrent(m_Window);
 
     // Set callbacks
+    glfwSetFramebufferSizeCallback(m_Window, framebuffer_size_callback);
+    LOG_INFO("OpenGL", "Successfully set callbacks.");
 
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
         LOG_ERROR("OpenGL", "Failed to initialise GLAD!");
@@ -48,8 +55,8 @@ bool OpenGLRenderer::create() {
     }
 
     glViewport(0, 0, m_Width, m_Height);
-    LOG_INFO("OpenGL", "Initialised OpenGL viewport with " << m_Width << "x"
-                                                           << m_Height);
+    LOG_INFO("OpenGL",
+             "Initialised OpenGL viewport with " << m_Width << "x" << m_Height);
 
     return true;
 }
@@ -62,4 +69,6 @@ void OpenGLRenderer::render() {
     if (glfwWindowShouldClose(m_Window)) {
         Engine::getInstance()->stop();
     }
+
+    glfwPollEvents();
 }
