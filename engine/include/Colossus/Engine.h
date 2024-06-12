@@ -1,14 +1,15 @@
 #ifndef ENGINE_H
 #define ENGINE_H
 
-#include "Colossus/Rendering/RendererFactory.h"
-#include "Colossus/System/Window.h"
+#include "Colossus/Render/RendererFactory.h"
+#include "Colossus/Render/RendererInterface.h"
+#include "Colossus/Render/Window.h"
 
 namespace Colossus {
 class Engine {
     private:
-        Window* m_Window = nullptr;
-        std::unique_ptr<RendererInterface> renderer;
+//        std::unique_ptr<RendererInterface> renderer;
+        Window* m_Window;
 
         bool m_IsRunning;
 

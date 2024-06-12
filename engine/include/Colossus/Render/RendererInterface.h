@@ -7,6 +7,7 @@ class RendererInterface {
         virtual ~RendererInterface() = default;
 
         virtual bool initialise() = 0;
+        virtual bool create() = 0;
         virtual void render() = 0;
 };
 }  // namespace Colossus

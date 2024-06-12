@@ -1,5 +1,5 @@
-#include "Colossus/Rendering/RendererFactory.h"
-#include "Colossus/Rendering/Renderers/OpenGLRenderer.h"
+#include "Colossus/Render/RendererFactory.h"
+#include "Colossus/Render/Renderers/OpenGLRenderer.h"
 
 using namespace Colossus;
 
