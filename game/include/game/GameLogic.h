@@ -4,6 +4,7 @@
 namespace Game {
 class GameLogic {
     public:
+        void setup();
         void run();
 };
 }  // namespace GameLogic

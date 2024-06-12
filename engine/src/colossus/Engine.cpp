@@ -16,8 +16,14 @@ Engine* Engine::getInstance() {
     return instance;
 }
 
-void Engine::initialise(const std::string& window_name) {
+void Engine::initialise(const std::string& window_name, RendererType type) {
     LOG_INFO("Engine", "Initialising with name '" << window_name << "'");
+
+    renderer = RendererFactory::createRenderer(type);
+
+    if (!renderer->initialise()) {
+        LOG_ERROR("Engine", "Could not initialise renderer!");
+    }
 
     if (m_Window) {
         LOG_WARN("Engine", "A window already exists, overwriting it...");
@@ -32,7 +38,7 @@ void Engine::initialise(const std::string& window_name) {
 
 void Engine::step() {
     m_Window->tick();
-    glfwPollEvents();
+    renderer->render();
 }
 
 void Engine::stop() { m_IsRunning = false; }
