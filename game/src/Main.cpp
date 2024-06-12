@@ -2,7 +2,7 @@
 
 Game::GameLogic game = Game::GameLogic();
 int main() {
-    game.run();
+    game.setup();
 
     return 0;
 }
