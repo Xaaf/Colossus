@@ -1,6 +1,6 @@
 project(Engine)
 
-find_package(glfw3 3.3 REQUIRED)
+find_package(glfw3 3.4 REQUIRED)
 
 # Add includes for libraries
 include_directories(${GLFW3_INCLUDE_DIRS})
