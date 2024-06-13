@@ -1,4 +1,4 @@
-#include "Colossus/Render/Renderers/OpenGLRenderer.h"
+#include "Colossus/Render/Arch/OpenGL/OpenGLRenderer.h"
 #include "Colossus/Engine.h"
 #include "Colossus/Input/Keyboard.h"
 
