@@ -1,13 +1,20 @@
 project(Engine)
 
-find_package(glfw3 3.4 REQUIRED)
+find_package(OpenGL REQUIRED)
 
-# Add includes for libraries
-include_directories(${GLFW3_INCLUDE_DIRS})
+# Add includes
+include_directories(${OPENGL_INCLUDE_DIRS})
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../external/glad/include)
-
-# Add our own includes
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include)
+
+# Add GLFW include directory
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../external/glfw/include)
+
+# Set GLFW build flags
+set(GLFW_BUILD_DOCS OFF CACHE BOOL "GLFW Lib Only")
+set(GLFW_INSTALL OFF CACHE BOOL "GLFW Lib Only")
+
+add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/../external/glfw ${CMAKE_CURRENT_BINARY_DIR}/build/glfw)
 
 # Add sources
 set(ENGINE_SOURCES
@@ -43,5 +50,5 @@ target_precompile_headers(pch PUBLIC ${PCH_HEADER})
 # Create static library
 add_library(engine STATIC ${ENGINE_SOURCES} ${ENGINE_HEADERS} ${GLAD_SOURCE})
 
-# Link with GLFW
-target_link_libraries(engine glfw)
+# Link with GLFW and OpenGL
+target_link_libraries(engine ${OPENGL_LIBRARIES} glfw)
