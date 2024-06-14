@@ -15,7 +15,7 @@ class OpenGLRenderer : public RendererInterface {
 
     public:
         bool initialise() override;
-        bool create() override;
+        bool createWindow() override;
         void render() override;
         void stop() override;
 };

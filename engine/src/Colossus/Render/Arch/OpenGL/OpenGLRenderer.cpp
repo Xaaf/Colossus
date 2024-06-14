@@ -65,8 +65,8 @@ bool OpenGLRenderer::initialise() {
     return true;
 }
 
-bool OpenGLRenderer::create() {
-    LOG_TRACE("OpenGL", "Calling OpenGLRenderer::create");
+bool OpenGLRenderer::createWindow() {
+    LOG_TRACE("OpenGL", "Calling OpenGLRenderer::createWindow");
 
     m_WindowName = "Heroes of Colossus";
     m_Width = 1280;
@@ -76,7 +76,7 @@ bool OpenGLRenderer::create() {
                                 nullptr, nullptr);
 
     if (m_Window == nullptr) {
-        LOG_ERROR("OpenGL", "Failed to create window!");
+        LOG_ERROR("OpenGL", "Failed to createWindow window!");
         glfwTerminate();
 
         return false;
@@ -101,6 +101,10 @@ bool OpenGLRenderer::create() {
 
     LOG_INFO("OpenGL",
              "Initialised OpenGL viewport with " << m_Width << "x" << m_Height);
+    LOG_INFO("OpenGL", " > GLFW v" << glfwGetVersionString() << ", OpenGL v"
+                                   << glGetString(GL_VERSION));
+    LOG_INFO("OpenGL", " > Graphics Card: " << glGetString(GL_RENDERER) << ", "
+                                            << glGetString(GL_VENDOR));
 
     temp_shaders();
 

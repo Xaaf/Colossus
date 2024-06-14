@@ -15,10 +15,10 @@ Window::Window(std::string window_name, int width, int height,
 Window::~Window() { LOG_TRACE("Window", "Calling Window::~Window"); }
 
 void Window::create() {
-    LOG_TRACE("Window", "Calling Window::create");
+    LOG_TRACE("Window", "Calling Window::createWindow");
 
-    if (!m_Renderer->create()) {
-        LOG_ERROR("Window", "Failed to create new window!");
+    if (!m_Renderer->createWindow()) {
+        LOG_ERROR("Window", "Failed to createWindow new window!");
     }
 }
 
