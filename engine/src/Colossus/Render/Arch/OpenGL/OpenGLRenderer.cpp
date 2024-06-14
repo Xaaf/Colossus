@@ -1,83 +1,18 @@
 #include "Colossus/Render/Arch/OpenGL/OpenGLRenderer.h"
 #include "Colossus/Engine.h"
 #include "Colossus/Input/Keyboard.h"
+#include "Colossus/Render/Arch/OpenGL/Shader.h"
 
 using namespace Colossus;
 
 float verts[] = {-0.5f, -0.5f, 0.0f, 0.5f, -0.5f, 0.0f, 0.0f, 0.5f, 0.0f};
 unsigned int inds[] = {0, 1, 2};
 
-const char* vertexShaderSource =
-    "#version 330 core\n"
-    "layout (location = 0) in vec3 aPos;\n"
-    "\n"
-    "void main()\n"
-    "{\n"
-    "    gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1.0);\n"
-    "}\0";
-
-const char* fragmentShaderSource =
-    "#version 330 core\n"
-    "out vec4 FragColor;\n"
-    "void main()\n"
-    "{\n"
-    "   FragColor = vec4(1.0f, 1.0f, 1.0f, 1.0f);\n"
-    "}\n\0";
-
-unsigned int vertexShader = 0;
-unsigned int fragmentShader = 0;
-
-unsigned int shaderProgram = 0;
-
 unsigned int VBO, VAO, EBO = 0;
+Shader shader;
 
 void temp_shaders() {
-    //==== Build Shader Program
-    // Vertex Shader
-    vertexShader = glCreateShader(GL_VERTEX_SHADER);
-    glShaderSource(vertexShader, 1, &vertexShaderSource, nullptr);
-    glCompileShader(vertexShader);
-
-    // Check for compile errors
-    int success;
-    char infoLog[512];
-    glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &success);
-    if (!success) {
-        glGetShaderInfoLog(vertexShader, 512, nullptr, infoLog);
-        LOG_WARN("OpenGL", "Failed to compile vertex shader\n" << infoLog);
-    }
-    LOG_INFO("OpenGL", "Compiled shader...");
-
-    // Fragment Shader
-    fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-    glShaderSource(fragmentShader, 1, &fragmentShaderSource, nullptr);
-    glCompileShader(fragmentShader);
-
-    // Check for compile errors
-    glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &success);
-    if (!success) {
-        glGetShaderInfoLog(fragmentShader, 512, nullptr, infoLog);
-        LOG_WARN("OpenGL", "Failed to compile fragment shader\n" << infoLog);
-    }
-    LOG_INFO("OpenGL", "Compiled shader...");
-
-    //==== Link Shader Program
-    shaderProgram = glCreateProgram();
-    glAttachShader(shaderProgram, vertexShader);
-    glAttachShader(shaderProgram, fragmentShader);
-    glLinkProgram(shaderProgram);
-
-    // Check for linking errors
-    glGetProgramiv(shaderProgram, GL_LINK_STATUS, &success);
-    if (!success) {
-        glGetProgramInfoLog(shaderProgram, 512, nullptr, infoLog);
-        LOG_WARN("OpenGL", "Failed to link shader program\n" << infoLog);
-    }
-    LOG_INFO("OpenGL", "Linked shader...");
-
-    // Cleanup shaders
-    glDeleteShader(vertexShader);
-    glDeleteShader(fragmentShader);
+    shader.create("assets/shaders/default.vert", "assets/shaders/default.frag");
 
     //==== Prepare For Rendering (VAO, VBO, EBO)
     glGenVertexArrays(1, &VAO);
@@ -167,8 +102,6 @@ bool OpenGLRenderer::create() {
     LOG_INFO("OpenGL",
              "Initialised OpenGL viewport with " << m_Width << "x" << m_Height);
 
-
-
     temp_shaders();
 
     return true;
@@ -178,7 +111,8 @@ void OpenGLRenderer::render() {
     glClearColor(0.2f, 0.2f, 0.6f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    glUseProgram(shaderProgram);
+    shader.use();
+
     glBindVertexArray(VAO);
     glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_INT, nullptr);
 

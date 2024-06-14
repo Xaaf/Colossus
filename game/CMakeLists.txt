@@ -22,3 +22,5 @@ add_executable(game ${GAME_SOURCES} ${GAME_HEADERS} ${GLAD_SOURCE})
 
 # Link the engine with the Game
 target_link_libraries(game engine)
+
+target_include_directories(game PRIVATE ${CMAKE_BINARY_DIR}/assets)
