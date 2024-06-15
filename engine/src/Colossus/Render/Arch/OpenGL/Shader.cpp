@@ -97,15 +97,16 @@ void Shader::checkStatusErrors(unsigned int object, const char *type) const {
             LOG_ERROR("Shader", "Failed to compile object (" << type << ").");
             LOG_ERROR("Shader", infoLog);
         }
-    } else {
-        glGetProgramiv(object, GL_LINK_STATUS, &success);
 
-        if (!success) {
-            glGetProgramInfoLog(object, 512, nullptr, infoLog);
-            LOG_ERROR("Shader",
-                      "Failed to link program (" << programId << ").");
-            LOG_ERROR("Shader", infoLog);
-        }
+        return;
+    }
+
+    glGetProgramiv(object, GL_LINK_STATUS, &success);
+
+    if (!success) {
+        glGetProgramInfoLog(object, 512, nullptr, infoLog);
+        LOG_ERROR("Shader", "Failed to link program (" << programId << ").");
+        LOG_ERROR("Shader", infoLog);
     }
 }
 
