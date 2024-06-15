@@ -2,17 +2,27 @@
 #include "Colossus/Engine.h"
 #include "Colossus/Input/Keyboard.h"
 #include "Colossus/Render/Arch/OpenGL/Shader.h"
+#include "Colossus/Render/Arch/OpenGL/Texture.h"
 
 using namespace Colossus;
 
-float verts[] = {-0.5f, -0.5f, 0.0f, 0.5f, -0.5f, 0.0f, 0.0f, 0.5f, 0.0f};
-unsigned int inds[] = {0, 1, 2};
+float vertices[] = {
+    // positions          // colors           // texture coords
+    0.5f,  0.5f,  0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 1.0f,  // top right
+    0.5f,  -0.5f, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f,  // bottom right
+    -0.5f, -0.5f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f,  // bottom left
+    -0.5f, 0.5f,  0.0f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f   // top left
+};
+
+unsigned int inds[] = {0, 1, 3, 1, 2, 3};
 
 unsigned int VBO, VAO, EBO = 0;
 Shader shader;
+Texture texture;
 
 void temp_shaders() {
     shader.create("assets/shaders/default.vert", "assets/shaders/default.frag");
+    texture.create("assets/textures/wall.jpg");
 
     //==== Prepare For Rendering (VAO, VBO, EBO)
     glGenVertexArrays(1, &VAO);
@@ -22,14 +32,23 @@ void temp_shaders() {
     glBindVertexArray(VAO);
 
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(verts), verts, GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(inds), inds, GL_STATIC_DRAW);
 
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float),
+    // position attribute
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float),
                           (void*)nullptr);
     glEnableVertexAttribArray(0);
+    // color attribute
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float),
+                          (void*)(3 * sizeof(float)));
+    glEnableVertexAttribArray(1);
+    // texture coord attribute
+    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float),
+                          (void*)(6 * sizeof(float)));
+    glEnableVertexAttribArray(2);
 
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindVertexArray(0);
@@ -117,8 +136,9 @@ void OpenGLRenderer::render() {
 
     shader.use();
 
+    glBindTexture(GL_TEXTURE_2D, texture.getId());
     glBindVertexArray(VAO);
-    glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_INT, nullptr);
+    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
 
     glfwSwapBuffers(m_Window);
     glfwPollEvents();

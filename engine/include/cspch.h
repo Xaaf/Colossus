@@ -2,6 +2,9 @@
 #ifndef CSPCH_H
 #define CSPCH_H
 
+// Defines
+#define STB_IMAGE_IMPLEMENTATION
+
 // Standard libraries
 #include <iostream>
 #include <vector>
