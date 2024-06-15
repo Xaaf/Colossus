@@ -30,6 +30,7 @@ set(ENGINE_HEADERS
         include/Colossus/System/Logging/LogLevels.h
         include/Colossus/Engine.h
         include/Colossus/Input/Keyboard.h
+        include/Colossus/Input/InputCodes.h
         include/Colossus/Render/RendererInterface.h
         include/Colossus/Render/Arch/OpenGL/OpenGLRenderer.h
         include/Colossus/Render/RendererFactory.h
@@ -37,8 +38,7 @@ set(ENGINE_HEADERS
         include/Colossus/Render/Arch/OpenGL/Shader.h)
 
 # Add glad source
-set(GLAD_SOURCE ${CMAKE_CURRENT_SOURCE_DIR}/../external/glad/src/glad.c
-        include/Colossus/Input/InputCodes.h)
+set(GLAD_SOURCE ${CMAKE_CURRENT_SOURCE_DIR}/../external/glad/src/glad.c)
 
 # Add precompiled header sources
 set(PCH_HEADER ${CMAKE_CURRENT_SOURCE_DIR}/include/cspch.h)
