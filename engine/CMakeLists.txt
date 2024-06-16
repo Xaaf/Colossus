@@ -27,7 +27,7 @@ set(ENGINE_SOURCES
         src/Colossus/Engine.cpp
         src/Colossus/Input/Keyboard.cpp
         src/Colossus/Render/Arch/OpenGL/OpenGLRenderer.cpp
-        src/Colossus/Render/RendererFactory.cpp
+        src/Colossus/Render/Renderer.cpp
         src/Colossus/Render/Window.cpp
         src/Colossus/Render/Arch/OpenGL/Shader.cpp
         src/Colossus/Render/Arch/OpenGL/Texture.cpp)
@@ -40,7 +40,7 @@ set(ENGINE_HEADERS
         include/Colossus/Input/InputCodes.h
         include/Colossus/Render/RendererInterface.h
         include/Colossus/Render/Arch/OpenGL/OpenGLRenderer.h
-        include/Colossus/Render/RendererFactory.h
+        include/Colossus/Render/Renderer.h
         include/Colossus/Render/Window.h
         include/Colossus/Render/Arch/OpenGL/Shader.h
         include/Colossus/Render/Arch/OpenGL/Texture.h)

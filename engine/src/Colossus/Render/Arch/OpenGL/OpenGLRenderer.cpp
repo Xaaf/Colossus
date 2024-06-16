@@ -100,7 +100,7 @@ bool OpenGLRenderer::createWindow() {
                                 nullptr, nullptr);
 
     if (m_Window == nullptr) {
-        LOG_ERROR("OpenGL", "Failed to createWindow window!");
+        LOG_ERROR("OpenGL", "Failed to create new window!");
         glfwTerminate();
 
         return false;

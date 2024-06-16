@@ -19,7 +19,8 @@ Engine* Engine::getInstance() {
 void Engine::initialise(const std::string& window_name, const std::string& renderer) {
     LOG_INFO("Engine", "Initialising with name '" << window_name << "'");
 
-    m_Window = new Window(window_name, 1280, 720, RendererFactory::stringToRenderType(renderer));
+    m_Window = new Window(window_name, 1280, 720,
+                          Renderer::stringToRenderType(renderer));
     m_Window->create();
 
     m_IsRunning = true;
