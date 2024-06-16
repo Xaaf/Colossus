@@ -85,6 +85,20 @@ void Shader::create(const char *vertexPath, const char *fragmentPath) {
 
 void Shader::use() const { glUseProgram(programId); }
 
+void Shader::setBool(const std::string &name, bool value) const {
+    glUniform1i(glGetUniformLocation(programId, name.c_str()), (int)value);
+}
+
+void Shader::setInt(const std::string &name, int value) const {
+    glUniform1i(glGetUniformLocation(programId, name.c_str()), value);
+}
+
+void Shader::setFloat(const std::string &name, float value) const {
+    glUniform1f(glGetUniformLocation(programId, name.c_str()), value);
+}
+
+unsigned int Shader::getId() const { return programId; }
+
 void Shader::checkStatusErrors(unsigned int object, const char *type) const {
     int success;
     char infoLog[512];
@@ -108,16 +122,4 @@ void Shader::checkStatusErrors(unsigned int object, const char *type) const {
         LOG_ERROR("Shader", "Failed to link program (" << programId << ").");
         LOG_ERROR("Shader", infoLog);
     }
-}
-
-void Shader::setBool(const std::string &name, bool value) const {
-    glUniform1i(glGetUniformLocation(programId, name.c_str()), (int)value);
-}
-
-void Shader::setInt(const std::string &name, int value) const {
-    glUniform1i(glGetUniformLocation(programId, name.c_str()), value);
-}
-
-void Shader::setFloat(const std::string &name, float value) const {
-    glUniform1f(glGetUniformLocation(programId, name.c_str()), value);
 }
