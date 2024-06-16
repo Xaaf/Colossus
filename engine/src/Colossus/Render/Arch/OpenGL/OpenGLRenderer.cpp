@@ -1,4 +1,7 @@
 #include "Colossus/Render/Arch/OpenGL/OpenGLRenderer.h"
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
 #include "Colossus/Engine.h"
 #include "Colossus/Input/Keyboard.h"
 #include "Colossus/Render/Arch/OpenGL/Shader.h"
@@ -7,14 +10,16 @@
 using namespace Colossus;
 
 float vertices[] = {
-    // positions          // colors           // texture coords
-    0.5f,  0.5f,  0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 1.0f,  // top right
-    0.5f,  -0.5f, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f,  // bottom right
-    -0.5f, -0.5f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f,  // bottom left
-    -0.5f, 0.5f,  0.0f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f   // top left
+    // positions          // texture coords
+    0.5f,  0.5f, 0.0f,   1.0f, 1.0f, // top right
+    0.5f, -0.5f, 0.0f,   1.0f, 0.0f, // bottom right
+    -0.5f, -0.5f, 0.0f,   0.0f, 0.0f, // bottom left
+    -0.5f,  0.5f, 0.0f,   0.0f, 1.0f  // top left
 };
-
-unsigned int inds[] = {0, 1, 3, 1, 2, 3};
+unsigned int inds[] = {
+    0, 1, 3, // first triangle
+    1, 2, 3  // second triangle
+};
 
 unsigned int VBO, VAO, EBO = 0;
 Shader shader;
@@ -38,11 +43,11 @@ void temp_shaders() {
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(inds), inds, GL_STATIC_DRAW);
 
     // position attribute
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float),
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float),
                           (void*)nullptr);
     glEnableVertexAttribArray(0);
     // color attribute
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float),
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float),
                           (void*)(3 * sizeof(float)));
     glEnableVertexAttribArray(1);
     // texture coord attribute
@@ -135,6 +140,14 @@ void OpenGLRenderer::render() {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     shader.use();
+
+    auto transform = glm::mat4(1.0f);
+    transform =
+        glm::rotate(transform, glm::radians(-90.0f), glm::vec3(0.0, 0.0, 1.0));
+    transform = glm::scale(transform, glm::vec3(0.5, 0.5, 0.5));
+
+    unsigned transformLoc = glGetUniformLocation(shader.getId(), "transform");
+    glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(transform));
 
     glBindTexture(GL_TEXTURE_2D, texture.getId());
     glBindVertexArray(VAO);
