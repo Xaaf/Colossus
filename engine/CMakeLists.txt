@@ -30,7 +30,8 @@ set(ENGINE_SOURCES
         src/Colossus/Render/Renderer.cpp
         src/Colossus/Render/Window.cpp
         src/Colossus/Render/Arch/OpenGL/Shader.cpp
-        src/Colossus/Render/Arch/OpenGL/Texture.cpp)
+        src/Colossus/Render/Arch/OpenGL/Texture.cpp
+        src/Colossus/Render/Mesh.cpp)
 set(ENGINE_HEADERS
         include/Colossus/System/Logging/Colors.h
         include/Colossus/System/Logging/Log.h
@@ -43,7 +44,9 @@ set(ENGINE_HEADERS
         include/Colossus/Render/Renderer.h
         include/Colossus/Render/Window.h
         include/Colossus/Render/Arch/OpenGL/Shader.h
-        include/Colossus/Render/Arch/OpenGL/Texture.h)
+        include/Colossus/Render/Arch/OpenGL/Texture.h
+        include/Colossus/Render/Mesh.h
+)
 
 # Add glad source
 set(GLAD_SOURCE ${CMAKE_CURRENT_SOURCE_DIR}/../external/glad/src/glad.c)
