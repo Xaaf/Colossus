@@ -1,5 +1,5 @@
-#ifndef COLOSSUS_TEXTURE_H
-#define COLOSSUS_TEXTURE_H
+#ifndef TEXTURE_H
+#define TEXTURE_H
 
 #include "cspch.h"
 
@@ -21,4 +21,4 @@ class Texture {
 };
 }  // namespace Colossus
 
-#endif  // COLOSSUS_TEXTURE_H
+#endif  // TEXTURE_H

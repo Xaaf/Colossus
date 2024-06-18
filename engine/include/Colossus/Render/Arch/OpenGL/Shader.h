@@ -1,5 +1,5 @@
-#ifndef COLOSSUS_SHADER_H
-#define COLOSSUS_SHADER_H
+#ifndef SHADER_H
+#define SHADER_H
 
 #include "cspch.h"
 
@@ -27,4 +27,4 @@ class Shader {
 };
 }  // namespace Colossus
 
-#endif  // COLOSSUS_SHADER_H
+#endif  // SHADER_H
