@@ -4,6 +4,7 @@
 #include "Colossus/Render/Renderer.h"
 #include "Colossus/Render/RendererInterface.h"
 #include "Colossus/Render/Window.h"
+#include "cspch.h"
 
 namespace Colossus {
 class Engine {
@@ -21,7 +22,8 @@ class Engine {
     public:
         static Engine* getInstance();
 
-        void initialise(const std::string& window_name, const std::string& renderer);
+        void initialise(const std::string& window_name,
+                        const std::string& renderer);
         void step();
         void stop();
 

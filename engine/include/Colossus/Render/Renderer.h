@@ -1,8 +1,8 @@
 #ifndef RENDERER_H
 #define RENDERER_H
 
-#include <memory>
 #include "Colossus/Render/RendererInterface.h"
+#include "cspch.h"
 
 namespace Colossus {
 enum class RendererType {

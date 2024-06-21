@@ -1,6 +1,8 @@
 #ifndef RENDERERINTERFACE_H
 #define RENDERERINTERFACE_H
 
+#include "cspch.h"
+
 namespace Colossus {
 class RendererInterface {
     public:
