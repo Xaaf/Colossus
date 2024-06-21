@@ -17,7 +17,7 @@ class Texture {
         ~Texture();
 
         void create(const char* texturePath);
-        unsigned int getId() const;
+        [[nodiscard]] unsigned int getId() const;
 };
 }  // namespace Colossus
 

@@ -25,7 +25,7 @@ class Engine {
         void step();
         void stop();
 
-        bool isRunning() const;
+        [[nodiscard]] bool isRunning() const;
 };
 }  // namespace Colossus
 

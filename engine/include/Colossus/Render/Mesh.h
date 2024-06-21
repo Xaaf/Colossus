@@ -15,11 +15,11 @@ class Mesh {
     public:
         Mesh(const std::vector<float>& vertices, const std::vector<int>& indices);
 
-        const float* getVertices() const;
-        const int* getIndices() const;
+        [[nodiscard]] const float* getVertices() const;
+        [[nodiscard]] const int* getIndices() const;
 
-        size_t getVerticesSize() const;
-        size_t getIndicesSize() const;
+        [[nodiscard]] size_t getVerticesSize() const;
+        [[nodiscard]] size_t getIndicesSize() const;
 };
 }
 
