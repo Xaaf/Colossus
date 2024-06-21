@@ -22,7 +22,6 @@ std::vector<int> inds = {
     1, 2, 3   // second triangle
 };
 
-unsigned int VBO, VAO, EBO = 0;
 Shader shader;
 Texture texture;
 
@@ -30,38 +29,6 @@ void temp_shaders() {
     shader.create("assets/shaders/default.vert", "assets/shaders/default.frag");
     texture.create("assets/textures/wall.jpg");
 
-    Mesh mesh(vertices, inds);
-
-    //==== Prepare For Rendering (VAO, VBO, EBO)
-    glGenVertexArrays(1, &VAO);
-    glGenBuffers(1, &VBO);
-    glGenBuffers(1, &EBO);
-
-    glBindVertexArray(VAO);
-
-    glBindBuffer(GL_ARRAY_BUFFER, VBO);
-    glBufferData(GL_ARRAY_BUFFER, mesh.getVerticesSize(), mesh.getVertices(),
-                 GL_STATIC_DRAW);
-
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, mesh.getIndicesSize(),
-                 mesh.getIndices(), GL_STATIC_DRAW);
-
-    // position attribute
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float),
-                          (void*)nullptr);
-    glEnableVertexAttribArray(0);
-    // // // color attribute
-    // glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float),
-    //                       (void*)(3 * sizeof(float)));
-    glEnableVertexAttribArray(1);
-    // texture coord attribute
-    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float),
-                          (void*)(3 * sizeof(float)));
-    glEnableVertexAttribArray(1);
-
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
-    glBindVertexArray(0);
     LOG_INFO("OpenGL", "All done!");
 }
 
@@ -135,7 +102,11 @@ bool OpenGLRenderer::createWindow() {
     LOG_INFO("OpenGL", " > Graphics Card: " << glGetString(GL_RENDERER) << ", "
                                             << glGetString(GL_VENDOR));
 
+    // TODO: Remove!
     temp_shaders();
+
+    Mesh mesh(vertices, inds);
+    addMesh(mesh);
 
     return true;
 }
@@ -155,8 +126,14 @@ void OpenGLRenderer::render() {
     glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(transform));
 
     glBindTexture(GL_TEXTURE_2D, texture.getId());
-    glBindVertexArray(VAO);
-    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
+
+    for (auto& it : meshBufferMap) {
+        LOG_DEBUG("OpenGL", "Rendering VAO " << it.second.vao);
+        glBindVertexArray(it.second.vao);
+        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
+
+        glBindVertexArray(0);
+    }
 
     glfwSwapBuffers(m_Window);
     glfwPollEvents();
@@ -165,7 +142,55 @@ void OpenGLRenderer::render() {
         Engine::getInstance()->stop();
     }
 }
+
 void OpenGLRenderer::stop() {
     LOG_INFO("OpenGL", "Terminating GLFW");
+
     glfwTerminate();
+}
+
+void OpenGLRenderer::addMesh(const Mesh& mesh) {
+    BufferIDs bufferIDs = createBuffers(mesh);
+    meshBufferMap[&mesh] = bufferIDs;
+}
+
+BufferIDs OpenGLRenderer::createBuffers(const Mesh& mesh) {
+    BufferIDs bufferIDs{};
+
+    // Generate and bind VAO
+    glGenVertexArrays(1, &bufferIDs.vao);
+    glBindVertexArray(bufferIDs.vao);
+
+    // Generate and bind VBO
+    glGenBuffers(1, &bufferIDs.vbo);
+    glBindBuffer(GL_ARRAY_BUFFER, bufferIDs.vbo);
+    glBufferData(GL_ARRAY_BUFFER, mesh.getVerticesSize() * sizeof(float),
+                 mesh.getVertices(), GL_STATIC_DRAW);
+
+    // Generate and bind EBO
+    glGenBuffers(1, &bufferIDs.ebo);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, bufferIDs.ebo);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, mesh.getIndicesSize(),
+                 mesh.getIndices(), GL_STATIC_DRAW);
+
+    // TODO: The stride we take right now isn't very universal. Consider
+    // changing! Setup position attributes
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float),
+                          (void*)nullptr);
+    glEnableVertexAttribArray(0);
+
+    // Setup texture attributes
+    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float),
+                          (void*)(3 * sizeof(float)));
+    glEnableVertexAttribArray(1);
+
+    // Unbind buffers
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    glBindVertexArray(0);
+
+    LOG_INFO("OpenGL", "Created new buffers for mesh - vao: "
+                           << bufferIDs.vao << ", vbo: " << bufferIDs.vbo
+                           << ", ebo: " << bufferIDs.ebo);
+
+    return bufferIDs;
 }
