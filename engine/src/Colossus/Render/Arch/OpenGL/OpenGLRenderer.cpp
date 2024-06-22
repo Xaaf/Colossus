@@ -128,7 +128,6 @@ void OpenGLRenderer::render() {
     glBindTexture(GL_TEXTURE_2D, texture.getId());
 
     for (auto& it : meshBufferMap) {
-        LOG_DEBUG("OpenGL", "Rendering VAO " << it.second.vao);
         glBindVertexArray(it.second.vao);
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
 
