@@ -29,7 +29,7 @@ void temp_shaders() {
     shader.create("assets/shaders/default.vert", "assets/shaders/default.frag");
     texture.create("assets/textures/wall.jpg");
 
-    LOG_INFO("OpenGL", "All done!");
+    LOG_DEBUG("OpenGL", "All done!");
 }
 
 // =======================
@@ -143,7 +143,7 @@ void OpenGLRenderer::render() {
 }
 
 void OpenGLRenderer::stop() {
-    LOG_INFO("OpenGL", "Terminating GLFW");
+    LOG_DEBUG("OpenGL", "Terminating GLFW");
 
     glfwTerminate();
 }
@@ -187,9 +187,9 @@ BufferIDs OpenGLRenderer::createBuffers(const Mesh& mesh) {
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindVertexArray(0);
 
-    LOG_INFO("OpenGL", "Created new buffers for mesh - vao: "
-                           << bufferIDs.vao << ", vbo: " << bufferIDs.vbo
-                           << ", ebo: " << bufferIDs.ebo);
+    LOG_DEBUG("OpenGL", "Created new buffers for mesh - vao: "
+                            << bufferIDs.vao << ", vbo: " << bufferIDs.vbo
+                            << ", ebo: " << bufferIDs.ebo);
 
     return bufferIDs;
 }
