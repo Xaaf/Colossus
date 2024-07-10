@@ -7,6 +7,7 @@
 #include "Colossus/Render/Arch/OpenGL/Shader.h"
 #include "Colossus/Render/Arch/OpenGL/Texture.h"
 #include "Colossus/Render/Mesh.h"
+#include "Colossus/Transform.h"
 
 using namespace Colossus;
 

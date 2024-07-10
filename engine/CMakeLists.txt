@@ -9,12 +9,12 @@ include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include)
 
 # Add GLFW include directory
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../external/glfw/include)
+# Add GLM include directory
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../external/glm)
 
 # Add STB include directory
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../external/stb/include)
 
-# Add GLM include directory
-include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../external/glm)
 
 # Set GLFW build flags
 set(GLFW_BUILD_DOCS OFF CACHE BOOL "GLFW Lib Only")
@@ -31,7 +31,8 @@ set(ENGINE_SOURCES
         src/Colossus/Render/Window.cpp
         src/Colossus/Render/Arch/OpenGL/Shader.cpp
         src/Colossus/Render/Arch/OpenGL/Texture.cpp
-        src/Colossus/Render/Mesh.cpp)
+        src/Colossus/Render/Mesh.cpp
+        src/Colossus/Transform.cpp)
 set(ENGINE_HEADERS
         include/Colossus/System/Logging/Colors.h
         include/Colossus/System/Logging/Log.h
@@ -46,6 +47,8 @@ set(ENGINE_HEADERS
         include/Colossus/Render/Arch/OpenGL/Shader.h
         include/Colossus/Render/Arch/OpenGL/Texture.h
         include/Colossus/Render/Mesh.h
+        include/Colossus/Transform.h
+        include/Colossus/Objects/Entity.h
 )
 
 # Add glad source
