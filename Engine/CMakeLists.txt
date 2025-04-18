@@ -24,6 +24,7 @@ add_library(Obelisk SHARED
         ${CMAKE_CURRENT_SOURCE_DIR}/../external/glad/src/glad.c
 
         src/ObeliskAPI.cpp
+        src/Renderer/Mesh.cpp
         src/Renderer/Window.cpp
 )
 
@@ -41,6 +42,7 @@ target_include_directories(Obelisk
         ${CMAKE_CURRENT_SOURCE_DIR}/include
         ${CMAKE_SOURCE_DIR}/external/GLFW/include
         ${CMAKE_SOURCE_DIR}/external/glad/include
+        ${CMAKE_SOURCE_DIR}/external/GLM
 )
 
 # Ensure using CPP for the PCH

@@ -1,5 +1,7 @@
 #include "Obelisk/ObeliskAPI.h"
 
+#include "Obelisk/Renderer/Mesh.h"
+
 namespace Obelisk {
 ObeliskAPI* ObeliskAPI::s_Instance = nullptr;
 
@@ -23,8 +25,29 @@ void ObeliskAPI::Init(int width, int height, const char* title) {
 void ObeliskAPI::Run() {
     LOG_INFO("Running Obelisk Engine...");
 
+    // --------- TEMPORARY TESTING ---------
+    std::vector<Vertex> triangleVertices = {
+        Vertex(glm::vec3(-0.5f, -0.5f, 0.0f), glm::vec3(1.0f, 0.0f, 0.0f),
+               glm::vec2(0.0f, 0.0f)), // Bottom-left (Red)
+        Vertex(glm::vec3(0.5f, -0.5f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f),
+               glm::vec2(1.0f, 0.0f)), // Bottom-right (Green)
+        Vertex(glm::vec3(0.0f, 0.5f, 0.0f), glm::vec3(0.0f, 0.0f, 1.0f),
+               glm::vec2(0.5f, 1.0f)) // Top-center (Blue)
+    };
+
+    std::vector<GLuint> triangleIndices = {
+        0, 1, 2
+    };
+
+    Mesh triangleMesh(triangleVertices, triangleIndices);
+    // -------------------------------------
+
     while (!m_Window->ShouldClose()) {
         m_Window->Tick();
+
+        triangleMesh.Bind();
+        glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_INT, 0);
+        triangleMesh.Unbind();
     }
 }
 

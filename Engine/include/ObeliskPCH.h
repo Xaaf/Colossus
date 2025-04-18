@@ -11,6 +11,7 @@
 // OpenGL-related
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
+#include <glm/glm.hpp>
 
 // Engine-wide Macros
 #include "Obelisk/Logging/Log.h"
