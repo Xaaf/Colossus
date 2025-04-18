@@ -13,4 +13,5 @@
 #include <GLFW/glfw3.h>
 
 // Engine-wide Macros
+#include "Obelisk/Logging/Log.h"
 #include "Obelisk/Macros.h"

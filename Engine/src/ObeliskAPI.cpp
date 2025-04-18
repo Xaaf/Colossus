@@ -1,42 +1,35 @@
 #include "Obelisk/ObeliskAPI.h"
 
 namespace Obelisk {
-void framebuffer_size_callback(GLFWwindow* window, int width, int height) {
-    glViewport(0, 0, width, height);
+ObeliskAPI* ObeliskAPI::s_Instance = nullptr;
+
+ObeliskAPI& ObeliskAPI::Get() {
+    if (!s_Instance)
+        s_Instance = new ObeliskAPI();
+
+    return *s_Instance;
 }
 
-void HelloEngine() {
-    glfwInit();
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-
-    GLFWwindow* window = glfwCreateWindow(640, 480, "Obelisk Engine", nullptr,
-                                          nullptr);
-    if (window == nullptr) {
-        std::cout << "Failed to create GLFW window" << std::endl;
-        glfwTerminate();
-        return;
+void ObeliskAPI::Init(int width, int height, const char* title) {
+    LOG_INFO("Initializing Obelisk Engine...");
+    m_Window = new Window();
+    if (!m_Window->Create(1280, 720, "Heroes of Colossus")) {
+        LOG_ERROR("Failed to create window!");
     }
 
-    glfwMakeContextCurrent(window);
+    LOG_INFO("Finished initializing Obelisk Engine!");
+}
 
-    if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
-        std::cout << "Failed to initialize GLAD" << std::endl;
-        return;
+void ObeliskAPI::Run() {
+    LOG_INFO("Running Obelisk Engine...");
+
+    while (!m_Window->ShouldClose()) {
+        m_Window->Tick();
     }
+}
 
-    glViewport(0, 0, 640, 480);
-    glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
-
-    while (!glfwWindowShouldClose(window)) {
-        glClearColor(0.2f, 0.2f, 0.6f, 1.0f);
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-        glfwSwapBuffers(window);
-        glfwPollEvents();
-    }
-
-    glfwTerminate();
+void ObeliskAPI::Shutdown() {
+    LOG_INFO("Shutting down Obelisk Engine...");
+    delete m_Window;
 }
 }
