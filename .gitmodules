@@ -1,8 +1,6 @@
-[submodule "external/glfw"]
-	path = external/glfw
+[submodule "external/GLFW"]
+	path = external/GLFW
 	url = https://github.com/glfw/glfw.git
-	branch = master
-[submodule "external/glm"]
-	path = external/glm
+[submodule "external/GLM"]
+	path = external/GLM
 	url = https://github.com/g-truc/glm.git
-	branch = master
