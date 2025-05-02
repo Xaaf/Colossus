@@ -11,7 +11,7 @@ class Window {
         Window() = default;
         ~Window();
 
-        int Create(int width, int height, const char* title);
+        int Create(int width, int height, std::string title);
         void Tick();
 
         [[nodiscard]] bool ShouldClose() const {

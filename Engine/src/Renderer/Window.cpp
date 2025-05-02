@@ -36,7 +36,7 @@ unsigned int VAO, VBO, EBO;
 Mesh triangleMesh;
 // -------------------------------------
 
-int Window::Create(int width, int height, const char* title) {
+int Window::Create(int width, int height, std::string title) {
     if (!glfwInit()) {
         LOG_ERROR("Failed to initialize GLFW");
         return -1;
@@ -50,7 +50,7 @@ int Window::Create(int width, int height, const char* title) {
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 #endif
 
-    m_Window = glfwCreateWindow(width, height, title, nullptr, nullptr);
+    m_Window = glfwCreateWindow(width, height, title.c_str(), nullptr, nullptr);
     if (!m_Window) {
         LOG_ERROR("Failed to create GLFW window");
         glfwTerminate();
@@ -104,7 +104,9 @@ int Window::Create(int width, int height, const char* title) {
 
     if (!success) {
         glGetShaderInfoLog(vertexShader, 512, nullptr, infoLog);
-        LOG_ERROR("ERROR::SHADER::VERTEX::COMPILATION_FAILED\n> " << infoLog);
+        LOG_ERROR(
+            "Vertex shader (" << vertexShader << ") compilation failed!\n> " <<
+            infoLog);
     }
 
     // Fragment shader creation
@@ -116,7 +118,9 @@ int Window::Create(int width, int height, const char* title) {
 
     if (!success) {
         glGetShaderInfoLog(fragmentShader, 512, nullptr, infoLog);
-        LOG_ERROR("ERROR::SHADER::FRAGMENT::COMPILATION_FAILED\n> " << infoLog);
+        LOG_ERROR(
+            "Fragment shader (" << fragmentShader << ") compilation failed!\n> "
+            << infoLog);
     }
 
     // Shader program creation
@@ -128,7 +132,9 @@ int Window::Create(int width, int height, const char* title) {
     glGetProgramiv(shaderProgram, GL_LINK_STATUS, &success);
     if (!success) {
         glGetProgramInfoLog(shaderProgram, 512, nullptr, infoLog);
-        LOG_ERROR("ERROR::SHADER::PROGRAM::LINKING_FAILED\n> " << infoLog);
+        LOG_ERROR(
+            "Linking shader program (" << shaderProgram << ") failed!\n> " <<
+            infoLog);
     }
 
     // Cleanup
