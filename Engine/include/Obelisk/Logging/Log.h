@@ -8,8 +8,6 @@
 #include "Colours.h"
 #include "LogLevels.h"
 
-#define CURRENT_LOG_LEVEL LOG_LEVEL_DEBUG
-
 /**
  * @brief Fetches the current time in the `HH:MM:SS` format.
  *

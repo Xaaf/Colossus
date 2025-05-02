@@ -30,19 +30,17 @@ Mesh::Mesh(std::vector<Vertex> const& vertices,
     // Cleanup
     glBindVertexArray(0);
 
-    LOG_TRACE("MeshID" << m_MeshID << " created");
+    LOG_TRACE("MeshID " << m_MeshID << " created");
 }
 
 Mesh::~Mesh() {
 }
 
 void Mesh::Bind() const {
-    LOG_TRACE("Binding MeshID " << m_MeshID);
     glBindVertexArray(m_VAO);
 }
 
 void Mesh::Unbind() const {
-    LOG_TRACE("Unbinding MeshID " << m_MeshID);
     glBindVertexArray(0);
 }
 }

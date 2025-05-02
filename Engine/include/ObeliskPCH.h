@@ -1,5 +1,8 @@
 #pragma once
 
+// Engine-wide definitions
+#define CURRENT_LOG_LEVEL LOG_LEVEL_TRACE
+
 // C++ Standard Library
 #include <iostream>
 #include <memory>
