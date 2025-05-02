@@ -33,9 +33,6 @@ Mesh::Mesh(std::vector<Vertex> const& vertices,
     LOG_TRACE("MeshID " << m_MeshID << " created");
 }
 
-Mesh::~Mesh() {
-}
-
 void Mesh::Bind() const {
     glBindVertexArray(m_VAO);
 }

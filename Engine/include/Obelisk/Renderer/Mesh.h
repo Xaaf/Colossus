@@ -23,7 +23,7 @@ class OBELISK_API Mesh {
         Mesh() = default;
         Mesh(std::vector<Vertex> const& vertices,
              std::vector<unsigned int> const& indices);
-        ~Mesh();
+        ~Mesh() = default;
 
         void Bind() const;
         void Unbind() const;
