@@ -24,6 +24,7 @@ add_library(Obelisk SHARED
         ${CMAKE_CURRENT_SOURCE_DIR}/../external/glad/src/glad.c
 
         src/ObeliskAPI.cpp
+        src/Renderer/Mesh.cpp
         src/Renderer/Window.cpp
 )
 
