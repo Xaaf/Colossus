@@ -25,6 +25,7 @@ add_library(Obelisk SHARED
 
         src/ObeliskAPI.cpp
         src/Renderer/Mesh.cpp
+        src/Renderer/Shader.cpp
         src/Renderer/Window.cpp
 )
 

@@ -2,6 +2,7 @@
 
 #include "GLFW/glfw3.h"
 #include "Obelisk/Renderer/Mesh.h"
+#include "Obelisk/Renderer/Shader.h"
 
 namespace Obelisk {
 Window::~Window() {
@@ -13,27 +14,8 @@ Window::~Window() {
 }
 
 // --------- TEMPORARY TESTING ---------
-const char* vertexShaderSource = "#version 330 core\n"
-    "layout (location = 0) in vec3 aPos;\n"
-    "void main()\n"
-    "{\n"
-    "   gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1.0);\n"
-    "}\0";
-unsigned int vertexShader;
-
-const char* fragmentShaderSource = "#version 330 core\n"
-    "out vec4 FragColor;\n"
-    "void main()\n"
-    "{\n"
-    "   FragColor = vec4(1.0f, 0.5f, 0.2f, 1.0f);\n"
-    "}\n\0";
-unsigned int fragmentShader;
-
-unsigned int shaderProgram;
-
-unsigned int VAO, VBO, EBO;
-
 Mesh triangleMesh;
+Shader shader;
 // -------------------------------------
 
 int Window::Create(int width, int height, std::string title) {
@@ -92,55 +74,8 @@ int Window::Create(int width, int height, std::string title) {
     };
 
     triangleMesh = Mesh(triangleVertices, triangleIndices);
+    shader = Shader("assets/shaders/basic.vert", "assets/shaders/basic.frag");
 
-    // Vertex Shader creation
-    vertexShader = glCreateShader(GL_VERTEX_SHADER);
-    glShaderSource(vertexShader, 1, &vertexShaderSource, nullptr);
-    glCompileShader(vertexShader);
-
-    int success;
-    char infoLog[512];
-    glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &success);
-
-    if (!success) {
-        glGetShaderInfoLog(vertexShader, 512, nullptr, infoLog);
-        LOG_ERROR(
-            "Vertex shader (" << vertexShader << ") compilation failed!\n> " <<
-            infoLog);
-    }
-
-    // Fragment shader creation
-    fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-    glShaderSource(fragmentShader, 1, &fragmentShaderSource, nullptr);
-    glCompileShader(fragmentShader);
-
-    glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &success);
-
-    if (!success) {
-        glGetShaderInfoLog(fragmentShader, 512, nullptr, infoLog);
-        LOG_ERROR(
-            "Fragment shader (" << fragmentShader << ") compilation failed!\n> "
-            << infoLog);
-    }
-
-    // Shader program creation
-    shaderProgram = glCreateProgram();
-    glAttachShader(shaderProgram, vertexShader);
-    glAttachShader(shaderProgram, fragmentShader);
-    glLinkProgram(shaderProgram);
-
-    glGetProgramiv(shaderProgram, GL_LINK_STATUS, &success);
-    if (!success) {
-        glGetProgramInfoLog(shaderProgram, 512, nullptr, infoLog);
-        LOG_ERROR(
-            "Linking shader program (" << shaderProgram << ") failed!\n> " <<
-            infoLog);
-    }
-
-    // Cleanup
-    glDeleteShader(vertexShader);
-    glDeleteShader(fragmentShader);
-    // -------------------------------------
     return 1;
 }
 
@@ -148,11 +83,13 @@ void Window::Tick() {
     glClearColor(0.2f, 0.3f, 0.8f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    glUseProgram(shaderProgram);
+    shader.Use();
 
     triangleMesh.Bind();
     glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_INT, 0);
     triangleMesh.Unbind();
+
+    glUseProgram(0);
 
     glfwPollEvents();
     glfwSwapBuffers(m_Window);
