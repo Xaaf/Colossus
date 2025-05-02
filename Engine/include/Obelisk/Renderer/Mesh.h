@@ -7,7 +7,7 @@ struct Vertex {
     glm::vec3 Position;
 };
 
-class Mesh {
+class OBELISK_API Mesh {
     private:
         unsigned int m_VAO = 0;
         unsigned int m_VBO = 0;
