@@ -32,6 +32,11 @@ Mesh::Mesh(std::vector<Vertex> const& vertices,
                           (void*)offsetof(Vertex, Color));
     glEnableVertexAttribArray(1);
 
+    // Texture Coords attribute
+    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex),
+                          (void*)offsetof(Vertex, TextureCoords));
+    glEnableVertexAttribArray(2);
+
     // Cleanup
     glBindVertexArray(0);
 

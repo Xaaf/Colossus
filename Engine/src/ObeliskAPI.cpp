@@ -1,5 +1,8 @@
 #include "Obelisk/ObeliskAPI.h"
 
+#define STB_IMAGE_IMPLEMENTATION
+#include <stb_image.h>
+
 namespace Obelisk {
 ObeliskAPI* ObeliskAPI::s_Instance = nullptr;
 
