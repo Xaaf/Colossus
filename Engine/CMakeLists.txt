@@ -44,6 +44,7 @@ target_include_directories(Obelisk
         ${CMAKE_SOURCE_DIR}/external/GLFW/include
         ${CMAKE_SOURCE_DIR}/external/glad/include
         ${CMAKE_SOURCE_DIR}/external/GLM
+        ${CMAKE_SOURCE_DIR}/external/stb/include
 )
 
 # Ensure using CPP for the PCH
