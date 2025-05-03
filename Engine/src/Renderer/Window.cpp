@@ -64,9 +64,12 @@ int Window::Create(int width, int height, std::string title) {
 
     // --------- TEMPORARY TESTING ---------
     std::vector<Vertex> triangleVertices = {
-        Vertex(glm::vec3(-0.5f, -0.5f, 0.0f)), // Bottom-left (Red)
-        Vertex(glm::vec3(0.5f, -0.5f, 0.0f)),  // Bottom-right (Green)
-        Vertex(glm::vec3(0.0f, 0.5f, 0.0f))    // Top-center (Blue)
+        // Bottom-left (Red)
+        Vertex(glm::vec3(-0.5f, -0.5f, 0.0f), glm::vec3(1.0f, 0.0f, 0.0f)),
+        // Bottom-right (Green)
+        Vertex(glm::vec3(0.5f, -0.5f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f)),
+        // Top-center (Blue)
+        Vertex(glm::vec3(0.0f, 0.5f, 0.0f), glm::vec3(0.0f, 0.0f, 1.0f))
     };
 
     std::vector<unsigned int> triangleIndices = {
@@ -83,11 +86,7 @@ void Window::Tick() {
     glClearColor(0.2f, 0.3f, 0.8f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    float timeValue = glfwGetTime();
-    float blueValue = (sin(timeValue) / 2.0f) + 0.5f;
-
     shader.Use();
-    shader.SetVec4("someColor", glm::vec4(0.0f, 0.0f, blueValue, 1.0f));
 
     triangleMesh.Bind();
     glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_INT, 0);
