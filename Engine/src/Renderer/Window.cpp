@@ -4,6 +4,7 @@
 #include "GLFW/glfw3.h"
 #include "Obelisk/Renderer/Mesh.h"
 #include "Obelisk/Renderer/Shader.h"
+#include "Obelisk/Renderer/Texture.h"
 
 namespace Obelisk {
 Window::~Window() {
@@ -17,9 +18,7 @@ Window::~Window() {
 // --------- TEMPORARY TESTING ---------
 Mesh mesh;
 Shader shader;
-
-unsigned char* data;
-unsigned int texture;
+Texture texture;
 // -------------------------------------
 
 int Window::Create(int width, int height, std::string title) {
@@ -90,33 +89,8 @@ int Window::Create(int width, int height, std::string title) {
     };
 
     mesh = Mesh(meshVertices, meshIndices);
-    shader = Shader("assets/shaders/basic.vert", "assets/shaders/basic.frag");
-
-    // --------- Texture Testing
-    glGenTextures(1, &texture);
-    glBindTexture(GL_TEXTURE_2D, texture);
-
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER,
-                    GL_LINEAR_MIPMAP_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-    int textureWidth, textureHeight, nrChannels;
-    data = stbi_load("../assets/textures/Testing.jpg", &textureWidth,
-                     &textureHeight,
-                     &nrChannels, 0);
-
-    if (data) {
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, textureWidth, textureHeight, 0,
-                     GL_RGB,
-                     GL_UNSIGNED_BYTE, data);
-        glGenerateMipmap(GL_TEXTURE_2D);
-    } else {
-        LOG_ERROR("Failed to load texture: " << stbi_failure_reason());
-    }
-
-    stbi_image_free(data);
+    shader = Shader("shaders/basic.vert", "shaders/basic.frag");
+    texture = Texture("textures/Testing.jpg");
     // -------------------------------------
 
     return 1;
@@ -126,12 +100,12 @@ void Window::Tick() {
     glClearColor(0.2f, 0.3f, 0.8f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    glBindTexture(GL_TEXTURE_2D, texture);
+    texture.Bind();
     shader.Use();
 
     mesh.Bind();
     glDrawElements(GL_TRIANGLES, mesh.GetNumberOfIndices(), GL_UNSIGNED_INT,
-                   0);
+                   nullptr);
     Obelisk::Mesh::Unbind();
 
     glUseProgram(0);

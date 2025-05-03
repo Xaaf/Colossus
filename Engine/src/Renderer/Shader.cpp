@@ -9,7 +9,7 @@ std::string Shader::LoadShaderSource(const std::string& filepath) {
     file.exceptions(std::ifstream::failbit | std::ifstream::badbit);
 
     try {
-        file.open("../" + filepath);
+        file.open("../assets/" + filepath);
 
         if (!file.is_open()) {
             LOG_ERROR("Failed to open file " + filepath);
