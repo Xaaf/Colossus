@@ -15,8 +15,8 @@ class OBELISK_API Mesh {
         unsigned int m_VBO = 0;
         unsigned int m_EBO = 0;
 
-        std::vector<Vertex> m_Vertices;
-        std::vector<unsigned int> m_Indices;
+        int m_NumVertices = 0;
+        int m_NumIndices = 0;
 
         uint32_t m_MeshID = -1;
         static uint32_t s_NextMeshID;
@@ -28,6 +28,14 @@ class OBELISK_API Mesh {
         ~Mesh() = default;
 
         void Bind() const;
-        void Unbind() const;
+        static void Unbind();
+
+        [[nodiscard]] int GetNumberOfVertices() const {
+            return m_NumVertices;
+        };
+
+        [[nodiscard]] int GetNumberOfIndices() const {
+            return m_NumIndices;
+        };
 };
 }

@@ -1,5 +1,6 @@
 #include "Obelisk/Renderer/Window.h"
 
+#include "stb_image.h"
 #include "GLFW/glfw3.h"
 #include "Obelisk/Renderer/Mesh.h"
 #include "Obelisk/Renderer/Shader.h"
@@ -14,8 +15,11 @@ Window::~Window() {
 }
 
 // --------- TEMPORARY TESTING ---------
-Mesh triangleMesh;
+Mesh mesh;
 Shader shader;
+
+unsigned char* data;
+unsigned int texture;
 // -------------------------------------
 
 int Window::Create(int width, int height, std::string title) {
@@ -63,21 +67,57 @@ int Window::Create(int width, int height, std::string title) {
         << glGetString(GL_VENDOR));
 
     // --------- TEMPORARY TESTING ---------
-    std::vector<Vertex> triangleVertices = {
-        // Bottom-left (Red)
-        Vertex(glm::vec3(-0.5f, -0.5f, 0.0f), glm::vec3(1.0f, 0.0f, 0.0f), glm::vec2(0.0f, 0.0f)),
-        // Bottom-right (Green)
-        Vertex(glm::vec3(0.5f, -0.5f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec2(1.0f, 0.0f)),
-        // Top-center (Blue)
-        Vertex(glm::vec3(0.0f, 0.5f, 0.0f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(0.5f, 1.0f))
+    std::vector<Vertex> meshVertices = {
+        // Bottom Left
+        Vertex(glm::vec3(-0.5f, -0.5f, 0.0f), glm::vec3(0.0f, 0.0f, 1.0f),
+               glm::vec2(0.0f, 0.0f)),
+        // Bottom Right
+        Vertex(glm::vec3(0.5f, -0.5f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f),
+               glm::vec2(1.0f, 0.0f)),
+        // Top Right
+        Vertex(glm::vec3(0.5f, 0.5f, 0.0f), glm::vec3(1.0f, 0.0f, 0.0f),
+               glm::vec2(1.0f, 1.0f)),
+        // Top Left
+        Vertex(glm::vec3(-0.5f, 0.5f, 0.0f), glm::vec3(1.0f, 1.0f, 0.0f),
+               glm::vec2(0.0f, 1.0f))
     };
 
-    std::vector<unsigned int> triangleIndices = {
-        0, 1, 2
+    std::vector<unsigned int> meshIndices = {
+        // First triangle
+        0, 1, 2,
+        // Second Triangle
+        2, 3, 0
     };
 
-    triangleMesh = Mesh(triangleVertices, triangleIndices);
+    mesh = Mesh(meshVertices, meshIndices);
     shader = Shader("assets/shaders/basic.vert", "assets/shaders/basic.frag");
+
+    // --------- Texture Testing
+    glGenTextures(1, &texture);
+    glBindTexture(GL_TEXTURE_2D, texture);
+
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER,
+                    GL_LINEAR_MIPMAP_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+    int textureWidth, textureHeight, nrChannels;
+    data = stbi_load("../assets/textures/Testing.jpg", &textureWidth,
+                     &textureHeight,
+                     &nrChannels, 0);
+
+    if (data) {
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, textureWidth, textureHeight, 0,
+                     GL_RGB,
+                     GL_UNSIGNED_BYTE, data);
+        glGenerateMipmap(GL_TEXTURE_2D);
+    } else {
+        LOG_ERROR("Failed to load texture: " << stbi_failure_reason());
+    }
+
+    stbi_image_free(data);
+    // -------------------------------------
 
     return 1;
 }
@@ -86,11 +126,13 @@ void Window::Tick() {
     glClearColor(0.2f, 0.3f, 0.8f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+    glBindTexture(GL_TEXTURE_2D, texture);
     shader.Use();
 
-    triangleMesh.Bind();
-    glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_INT, 0);
-    triangleMesh.Unbind();
+    mesh.Bind();
+    glDrawElements(GL_TRIANGLES, mesh.GetNumberOfIndices(), GL_UNSIGNED_INT,
+                   0);
+    Obelisk::Mesh::Unbind();
 
     glUseProgram(0);
 

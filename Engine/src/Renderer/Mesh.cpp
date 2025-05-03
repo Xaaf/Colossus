@@ -40,6 +40,9 @@ Mesh::Mesh(std::vector<Vertex> const& vertices,
     // Cleanup
     glBindVertexArray(0);
 
+    m_NumVertices = vertices.size();
+    m_NumIndices = indices.size();
+
     LOG_TRACE("MeshID " << m_MeshID << " created");
 }
 
@@ -47,7 +50,7 @@ void Mesh::Bind() const {
     glBindVertexArray(m_VAO);
 }
 
-void Mesh::Unbind() const {
+void Mesh::Unbind() {
     glBindVertexArray(0);
 }
 }
