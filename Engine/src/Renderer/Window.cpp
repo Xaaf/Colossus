@@ -83,7 +83,11 @@ void Window::Tick() {
     glClearColor(0.2f, 0.3f, 0.8f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+    float timeValue = glfwGetTime();
+    float blueValue = (sin(timeValue) / 2.0f) + 0.5f;
+
     shader.Use();
+    shader.SetVec4("someColor", glm::vec4(0.0f, 0.0f, blueValue, 1.0f));
 
     triangleMesh.Bind();
     glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_INT, 0);
