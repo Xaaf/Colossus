@@ -21,7 +21,7 @@ Shader shader;
 Texture texture;
 // -------------------------------------
 
-int Window::Create(int width, int height, std::string title) {
+int Window::Create(int width, int height, const std::string& title) {
     if (!glfwInit()) {
         LOG_ERROR("Failed to initialize GLFW");
         return -1;
