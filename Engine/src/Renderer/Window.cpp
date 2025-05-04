@@ -5,6 +5,7 @@
 #include "Obelisk/Renderer/Mesh.h"
 #include "Obelisk/Renderer/Shader.h"
 #include "Obelisk/Renderer/Texture.h"
+#include "Obelisk/Scene/Entity.h"
 
 namespace Obelisk {
 Window::~Window() {
@@ -19,6 +20,7 @@ Window::~Window() {
 Mesh mesh;
 Shader shader;
 Texture texture;
+Entity entity;
 // -------------------------------------
 
 int Window::Create(int width, int height, const std::string& title) {
@@ -91,6 +93,12 @@ int Window::Create(int width, int height, const std::string& title) {
     mesh = Mesh(meshVertices, meshIndices);
     shader = Shader("shaders/basic.vert", "shaders/basic.frag");
     texture = Texture("textures/Testing.jpg");
+
+    auto meshPtr = std::make_shared<Mesh>(mesh);
+    auto shaderPtr = std::make_shared<Shader>(shader);
+    auto texturePtr = std::make_shared<Texture>(texture);
+
+    entity = Entity(meshPtr, shaderPtr, texturePtr);
     // -------------------------------------
 
     return 1;
@@ -100,13 +108,7 @@ void Window::Tick() {
     glClearColor(0.2f, 0.3f, 0.8f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    texture.Bind();
-    shader.Use();
-
-    mesh.Bind();
-    glDrawElements(GL_TRIANGLES, mesh.GetNumberOfIndices(), GL_UNSIGNED_INT,
-                   nullptr);
-    Obelisk::Mesh::Unbind();
+    entity.Draw();
 
     glUseProgram(0);
 

@@ -29,6 +29,7 @@ add_library(Obelisk SHARED
         src/Renderer/Shader.cpp
         src/Renderer/Texture.cpp
         src/Renderer/Window.cpp
+        src/Scene/Entity.cpp
 )
 
 # Tell CMake to not use the PCH for glad.c
