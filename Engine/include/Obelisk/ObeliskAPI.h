@@ -26,6 +26,8 @@ class OBELISK_API ObeliskAPI {
         void Run();
         void Shutdown();
 
+        Window* GetWindow() { return m_Window; };
+
     private:
         ObeliskAPI() = default;
         ~ObeliskAPI() = default;

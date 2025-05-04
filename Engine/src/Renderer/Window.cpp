@@ -2,9 +2,6 @@
 
 #include "stb_image.h"
 #include "GLFW/glfw3.h"
-#include "Obelisk/Renderer/Mesh.h"
-#include "Obelisk/Renderer/Shader.h"
-#include "Obelisk/Renderer/Texture.h"
 #include "Obelisk/Scene/Entity.h"
 #include "Obelisk/Scene/Scene.h"
 
@@ -16,18 +13,6 @@ Window::~Window() {
 
     glfwTerminate();
 }
-
-// --------- TEMPORARY TESTING ---------
-Mesh mesh;
-Mesh meshTwo;
-Shader shader;
-Texture texture;
-
-Entity entity;
-Entity entityTwo;
-
-Scene scene;
-// -------------------------------------
 
 int Window::Create(int width, int height, const std::string& title) {
     if (!glfwInit()) {
@@ -72,49 +57,6 @@ int Window::Create(int width, int height, const std::string& title) {
         << glGetString(GL_VERSION));
     LOG_INFO("> Graphics Card: " << glGetString(GL_RENDERER) << ", "
         << glGetString(GL_VENDOR));
-
-    // --------- TEMPORARY TESTING ---------
-    std::vector<Vertex> meshVertices = {
-        // Bottom Left
-        Vertex(glm::vec3(-0.5f, -0.5f, 0.0f), glm::vec3(0.0f, 0.0f, 1.0f),
-               glm::vec2(0.0f, 0.0f)),
-        // Bottom Right
-        Vertex(glm::vec3(0.5f, -0.5f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f),
-               glm::vec2(1.0f, 0.0f)),
-        // Top Right
-        Vertex(glm::vec3(0.5f, 0.5f, 0.0f), glm::vec3(1.0f, 0.0f, 0.0f),
-               glm::vec2(1.0f, 1.0f)),
-        // Top Left
-        Vertex(glm::vec3(-0.5f, 0.5f, 0.0f), glm::vec3(1.0f, 1.0f, 0.0f),
-               glm::vec2(0.0f, 1.0f))
-    };
-
-    std::vector<unsigned int> meshIndices = {
-        // First triangle
-        0, 1, 2
-    };
-
-    std::vector<unsigned int> meshIndicesTwo = {
-        // Second Triangle
-        2, 3, 0
-    };
-
-    mesh = Mesh(meshVertices, meshIndices);
-    meshTwo = Mesh(meshVertices, meshIndicesTwo);
-    shader = Shader("shaders/basic.vert", "shaders/basic.frag");
-    texture = Texture("textures/Testing.jpg");
-
-    auto meshPtr = std::make_shared<Mesh>(mesh);
-    auto meshTwoPtr = std::make_shared<Mesh>(meshTwo);
-    auto shaderPtr = std::make_shared<Shader>(shader);
-    auto texturePtr = std::make_shared<Texture>(texture);
-
-    entity = Entity(meshPtr, shaderPtr, texturePtr);
-    entityTwo = Entity(meshTwoPtr, shaderPtr, texturePtr);
-    scene.AddEntity(&entity);
-    scene.AddEntity(&entityTwo);
-    // -------------------------------------
-
     return 1;
 }
 
@@ -122,8 +64,12 @@ void Window::Tick() {
     glClearColor(0.2f, 0.3f, 0.8f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    for (auto entity : scene.GetEntities()) {
-        entity->Draw();
+    if (m_Scene) {
+        for (auto entity : m_Scene->GetEntities()) {
+            entity->Draw();
+        }
+    } else {
+        LOG_WARN("No active scene!");
     }
 
     glUseProgram(0);
