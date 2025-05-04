@@ -6,6 +6,7 @@
 #include "Obelisk/Renderer/Shader.h"
 #include "Obelisk/Renderer/Texture.h"
 #include "Obelisk/Scene/Entity.h"
+#include "Obelisk/Scene/Scene.h"
 
 namespace Obelisk {
 Window::~Window() {
@@ -18,9 +19,14 @@ Window::~Window() {
 
 // --------- TEMPORARY TESTING ---------
 Mesh mesh;
+Mesh meshTwo;
 Shader shader;
 Texture texture;
+
 Entity entity;
+Entity entityTwo;
+
+Scene scene;
 // -------------------------------------
 
 int Window::Create(int width, int height, const std::string& title) {
@@ -85,20 +91,28 @@ int Window::Create(int width, int height, const std::string& title) {
 
     std::vector<unsigned int> meshIndices = {
         // First triangle
-        0, 1, 2,
+        0, 1, 2
+    };
+
+    std::vector<unsigned int> meshIndicesTwo = {
         // Second Triangle
         2, 3, 0
     };
 
     mesh = Mesh(meshVertices, meshIndices);
+    meshTwo = Mesh(meshVertices, meshIndicesTwo);
     shader = Shader("shaders/basic.vert", "shaders/basic.frag");
     texture = Texture("textures/Testing.jpg");
 
     auto meshPtr = std::make_shared<Mesh>(mesh);
+    auto meshTwoPtr = std::make_shared<Mesh>(meshTwo);
     auto shaderPtr = std::make_shared<Shader>(shader);
     auto texturePtr = std::make_shared<Texture>(texture);
 
     entity = Entity(meshPtr, shaderPtr, texturePtr);
+    entityTwo = Entity(meshTwoPtr, shaderPtr, texturePtr);
+    scene.AddEntity(&entity);
+    scene.AddEntity(&entityTwo);
     // -------------------------------------
 
     return 1;
@@ -108,7 +122,9 @@ void Window::Tick() {
     glClearColor(0.2f, 0.3f, 0.8f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    entity.Draw();
+    for (auto entity : scene.GetEntities()) {
+        entity->Draw();
+    }
 
     glUseProgram(0);
 
