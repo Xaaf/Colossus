@@ -7,6 +7,14 @@ set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON)
 add_subdirectory(Engine)
 add_subdirectory(GameClient)
 
+set_target_properties(Obelisk PROPERTIES
+        RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}
+)
+
+set_target_properties(Colossus PROPERTIES
+        RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}
+)
+
 # Add assets folder (shaders)
 file(GLOB SHADER_FILES "${CMAKE_SOURCE_DIR}/assets/shaders/*")
 foreach(SHADER_FILE ${SHADER_FILES})
