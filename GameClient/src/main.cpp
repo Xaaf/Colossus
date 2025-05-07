@@ -10,7 +10,12 @@ Obelisk::Texture texture;
 Obelisk::Entity entity;
 Obelisk::Scene scene;
 
+glm::mat4 trans = glm::mat4(1.0f);
+
 void MyInit() {
+    trans = glm::rotate(trans, glm::radians(90.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+    trans = glm::scale(trans, glm::vec3(0.5f, 0.5f, 0.5f));
+
     std::vector<Obelisk::Vertex> meshVertices = {
         // Bottom Left
         Obelisk::Vertex(glm::vec3(-0.5f, -0.5f, 0.0f), glm::vec3(0.0f, 0.0f, 1.0f),
@@ -43,6 +48,8 @@ void MyInit() {
 
     entity = Obelisk::Entity(meshPtr, shaderPtr, texturePtr);
     scene.AddEntity(&entity);
+
+    entity.GetShader()->SetMat4("transform", trans);
 
     Obelisk::ObeliskAPI::Get().GetWindow()->SetScene(&scene);
 }
