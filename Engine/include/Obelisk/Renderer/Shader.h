@@ -7,8 +7,8 @@ class OBELISK_API Shader {
     private:
         unsigned int m_ProgramID;
 
-        int m_Success;
-        char m_InfoLog[512];
+        int m_Success = -1;
+        char m_InfoLog[512] = {};
 
         static std::string LoadShaderSource(const std::string& filepath);
         [[nodiscard]] unsigned int GetUniformLocation(const std::string& uniformName) const;
