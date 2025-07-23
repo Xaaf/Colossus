@@ -1,5 +1,4 @@
 #include "Obelisk/Renderer/Window.h"
-#include "GLFW/glfw3.h"
 #include "Obelisk/Scene/Entity.h"
 #include "Obelisk/Scene/Scene.h"
 #include "stb_image.h"

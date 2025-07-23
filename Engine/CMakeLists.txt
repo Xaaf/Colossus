@@ -16,6 +16,16 @@ add_library(pch STATIC ${PCH_SOURCE})
 target_compile_features(pch PUBLIC cxx_std_20)
 target_precompile_headers(pch PUBLIC ${PCH_HEADER})
 
+# Add include directories to PCH target
+target_include_directories(pch
+        PUBLIC
+        ${CMAKE_CURRENT_SOURCE_DIR}/include
+        ${CMAKE_SOURCE_DIR}/external/GLFW/include
+        ${CMAKE_SOURCE_DIR}/external/glad/include
+        ${CMAKE_SOURCE_DIR}/external/GLM
+        ${CMAKE_SOURCE_DIR}/external/stb/include
+)
+
 # Specify the binary directory for building GLFW
 add_subdirectory(${CMAKE_SOURCE_DIR}/external/GLFW ${CMAKE_BINARY_DIR}/external/glfw)
 

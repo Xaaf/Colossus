@@ -78,22 +78,26 @@ IfMacros:
   - KJ_IF_MAYBE
 IncludeBlocks: Merge
 IncludeCategories:
-  - Regex: ^"sppch.h"$
+  - Regex: ^"ObeliskPCH.h"$
     Priority: 1
-  - Regex: ^<ext/.*\.h>
+  - Regex: ^<glad/glad\.h>$
+    Priority: 2
+  - Regex: ^<GLFW/glfw3\.h>$
     Priority: 3
+  - Regex: ^<ext/.*\.h>
+    Priority: 5
     SortPriority: 0
     CaseSensitive: false
   - Regex: ^<.*\.h>
-    Priority: 2
+    Priority: 4
     SortPriority: 0
     CaseSensitive: false
   - Regex: ^<.*
-    Priority: 3
+    Priority: 6
     SortPriority: 0
     CaseSensitive: false
   - Regex: .*
-    Priority: 4
+    Priority: 7
     SortPriority: 0
     CaseSensitive: false
 IncludeIsMainRegex: ([-_](test|unittest))?$
