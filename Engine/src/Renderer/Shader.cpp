@@ -91,42 +91,35 @@ void Shader::Use() const { glUseProgram(m_ProgramID); }
 void Shader::SetBool(const std::string& name, bool value) const {
     Use();
     glUniform1i(GetUniformLocation(name), value);
-    glUseProgram(0);
 }
 
 void Shader::SetInt(const std::string& name, int value) const {
     Use();
     glUniform1i(GetUniformLocation(name), value);
-    glUseProgram(0);
 }
 
 void Shader::SetFloat(const std::string& name, float value) const {
     Use();
     glUniform1f(GetUniformLocation(name), value);
-    glUseProgram(0);
 }
 
 void Shader::SetVec2(const std::string& name, const glm::vec2& value) const {
     Use();
     glUniform2f(GetUniformLocation(name), value.x, value.y);
-    glUseProgram(0);
 }
 
 void Shader::SetVec3(const std::string& name, const glm::vec3& value) const {
     Use();
     glUniform3f(GetUniformLocation(name), value.x, value.y, value.z);
-    glUseProgram(0);
 }
 
 void Shader::SetVec4(const std::string& name, const glm::vec4& value) const {
     Use();
     glUniform4f(GetUniformLocation(name), value.x, value.y, value.z, value.w);
-    glUseProgram(0);
 }
 
 void Shader::SetMat4(const std::string& name, const glm::mat4& value) const {
     Use();
     glUniformMatrix4fv(GetUniformLocation(name), 1, GL_FALSE, &value[0][0]);
-    glUseProgram(0);
 }
 }  // namespace Obelisk

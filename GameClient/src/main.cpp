@@ -4,19 +4,10 @@
 #include "Obelisk/Renderer/Texture.h"
 #include "Obelisk/Scene/Entity.h"
 
-Obelisk::Mesh mesh;
-Obelisk::Shader shader;
-Obelisk::Texture texture;
 Obelisk::Entity entity;
 Obelisk::Scene scene;
 
-glm::mat4 trans = glm::mat4(1.0f);
-
 void MyInit() {
-    trans =
-        glm::rotate(trans, glm::radians(90.0f), glm::vec3(0.0f, 0.0f, 1.0f));
-    trans = glm::scale(trans, glm::vec3(0.5f, 0.5f, 0.5f));
-
     std::vector<Obelisk::Vertex> meshVertices = {
         // Bottom Left
         Obelisk::Vertex(glm::vec3(-0.5f, -0.5f, 0.0f),
@@ -36,18 +27,17 @@ void MyInit() {
                                              // Second Triangle
                                              2, 3, 0};
 
-    mesh = Obelisk::Mesh(meshVertices, meshIndices);
-    shader = Obelisk::Shader("shaders/basic.vert", "shaders/basic.frag");
-    texture = Obelisk::Texture("textures/Testing.jpg");
-
-    auto meshPtr = std::make_shared<Obelisk::Mesh>(mesh);
-    auto shaderPtr = std::make_shared<Obelisk::Shader>(shader);
-    auto texturePtr = std::make_shared<Obelisk::Texture>(texture);
-
-    entity = Obelisk::Entity(meshPtr, shaderPtr, texturePtr);
+    entity = Obelisk::Entity(
+        std::make_shared<Obelisk::Mesh>(meshVertices, meshIndices),
+        std::make_shared<Obelisk::Shader>("shaders/basic.vert",
+                                          "shaders/basic.frag"),
+        std::make_shared<Obelisk::Texture>("textures/Testing.jpg"));
     scene.AddEntity(&entity);
 
-    entity.GetShader()->SetMat4("transform", trans);
+    // Simple test - no rotation, just position at origin
+    entity.GetTransform().SetPosition(0.0f, 0.0f, 0.0f);
+    entity.GetTransform().SetRotation(0, 0, 0);        // No rotation first
+    entity.GetTransform().SetScale(1.0f, 1.0f, 1.0f);  // Normal scale
 
     Obelisk::ObeliskAPI::Get().GetWindow()->SetScene(&scene);
 }

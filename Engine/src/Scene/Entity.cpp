@@ -30,6 +30,7 @@ std::shared_ptr<Texture> Entity::GetTexture() const { return m_Texture; }
 
 void Entity::Draw() const {
     if (!m_Mesh) {
+        LOG_ERROR("No mesh attached to entity!");
         return;
     }
 
@@ -39,6 +40,9 @@ void Entity::Draw() const {
     }
 
     m_Shader->Use();
+
+    glm::mat4 modelMatrix = m_Transform.GetModelMatrix();
+    m_Shader->SetMat4("transform", modelMatrix);
 
     if (m_Texture) {
         m_Texture->Bind();

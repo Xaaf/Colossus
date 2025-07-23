@@ -35,6 +35,7 @@ add_library(Obelisk SHARED
 
         src/ObeliskAPI.cpp
         src/ObeliskPCH.cpp
+        src/Components/Transform.cpp
         src/Renderer/Mesh.cpp
         src/Renderer/Shader.cpp
         src/Renderer/Texture.cpp
@@ -48,7 +49,7 @@ set_source_files_properties(${CMAKE_CURRENT_SOURCE_DIR}/../external/glad/src/gla
 )
 
 # Link dependencies
-target_link_libraries(Obelisk PRIVATE glfw ${OPEN_GL_LIBRARIES})
+target_link_libraries(Obelisk PRIVATE glfw ${OPENGL_LIBRARIES})
 
 # Include paths
 target_include_directories(Obelisk

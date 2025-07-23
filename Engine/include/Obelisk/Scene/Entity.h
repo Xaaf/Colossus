@@ -1,10 +1,10 @@
 #pragma once
 
+#include "ObeliskPCH.h"
 #include "Obelisk/Components/Transform.h"
 #include "Obelisk/Renderer/Mesh.h"
 #include "Obelisk/Renderer/Shader.h"
 #include "Obelisk/Renderer/Texture.h"
-#include "ObeliskPCH.h"
 
 namespace Obelisk {
 class OBELISK_API Entity {
@@ -23,6 +23,8 @@ class OBELISK_API Entity {
         void SetMesh(std::shared_ptr<Mesh> mesh);
         void SetShader(std::shared_ptr<Shader> shader);
         void SetTexture(std::shared_ptr<Texture> texture);
+
+        Transform& GetTransform() { return m_Transform; }
 
         std::shared_ptr<Mesh> GetMesh() const;
         std::shared_ptr<Shader> GetShader() const;
