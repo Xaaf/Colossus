@@ -16,12 +16,7 @@ int Window::Create(int width, int height, const std::string& title) {
         return -1;
     }
 
-    // Set error callback for better debugging
-    glfwSetErrorCallback([](int error, const char* description) {
-        LOG_ERROR("GLFW Error " << error << ": " << description);
-    })
-
-        glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
