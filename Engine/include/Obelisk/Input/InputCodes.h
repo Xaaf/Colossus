@@ -1,13 +1,43 @@
 #ifndef INPUTCODES_H
 #define INPUTCODES_H
 
+/**
+ * @file InputCodes.h
+ * @brief Input key codes and action constants for the Colossus engine.
+ *
+ * This header defines all the key codes and mouse button codes used throughout
+ * the engine's input system. The constants are prefixed with "CS_" (Colossus)
+ * and are designed to be compatible with GLFW input codes while providing
+ * a layer of abstraction for the engine.
+ *
+ * Key Code Categories:
+ * - Action states (PRESS, RELEASE, REPEAT)
+ * - Printable keys (letters, numbers, punctuation)
+ * - Function keys (F1-F12)
+ * - Special keys (arrows, modifiers, etc.)
+ * - Mouse buttons
+ *
+ * @note These constants are used by the Keyboard and Mouse input classes
+ * @note Values are compatible with GLFW key definitions
+ */
+
 #include "ObeliskPCH.h"
 
-#define CS_RELEASE 0
-#define CS_PRESS 1
-#define CS_REPEAT 2
+/**
+ * @name Input Action States
+ * @brief Constants defining the state of input actions
+ * @{
+ */
+#define CS_RELEASE 0  ///< Key or button was released
+#define CS_PRESS 1    ///< Key or button was pressed
+#define CS_REPEAT 2   ///< Key is being held down (repeated press)
+/** @} */
 
-/* Printable keys */
+/**
+ * @name Printable Keys
+ * @brief ASCII-compatible printable character key codes
+ * @{
+ */
 #define CS_KEY_SPACE 32
 #define CS_KEY_APOSTROPHE 39 /* ' */
 #define CS_KEY_COMMA 44      /* , */
