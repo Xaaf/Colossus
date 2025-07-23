@@ -19,8 +19,6 @@ class OBELISK_API Window {
 
         void SetScene(Scene* scene) { m_Scene = scene; };
 
-        [[nodiscard]] bool ShouldClose() const {
-            return glfwWindowShouldClose(m_Window);
-        };
+        [[nodiscard]] bool ShouldClose() const;
 };
 }  // namespace Obelisk

@@ -5,12 +5,9 @@
 #include <utility>
 
 namespace Obelisk {
-ObeliskAPI* ObeliskAPI::s_Instance = nullptr;
-
 ObeliskAPI& ObeliskAPI::Get() {
-    if (!s_Instance) s_Instance = new ObeliskAPI();
-
-    return *s_Instance;
+    static ObeliskAPI instance;  // Meyer's singleton - automatically cleaned up
+    return instance;
 }
 
 void ObeliskAPI::SetInitCallback(std::function<void()> callback) {
@@ -28,7 +25,7 @@ void ObeliskAPI::SetShutdownCallback(std::function<void()> callback) {
 void ObeliskAPI::Init(int width, int height, const char* title) {
     LOG_INFO("Initializing Obelisk Engine...");
 
-    m_Window = new Window();
+    m_Window = std::make_unique<Window>();
     if (!m_Window->Create(1280, 720, "Heroes of Colossus")) {
         LOG_ERROR("Failed to create window!");
     }
@@ -55,10 +52,7 @@ void ObeliskAPI::Run() {
 void ObeliskAPI::Shutdown() {
     LOG_INFO("Shutting down Obelisk Engine...");
 
-    if (m_Window) {
-        delete m_Window;
-        m_Window = nullptr;
-    }
+    m_Window.reset();  // Automatically calls destructor
     glfwTerminate();
 
     if (m_ShutdownCallback) {

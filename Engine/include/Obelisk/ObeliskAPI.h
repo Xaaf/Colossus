@@ -6,13 +6,11 @@
 namespace Obelisk {
 class OBELISK_API ObeliskAPI {
     private:
-        static ObeliskAPI* s_Instance;
-
         std::function<void()> m_InitCallback;
         std::function<void()> m_UpdateCallback;
         std::function<void()> m_ShutdownCallback;
 
-        Window* m_Window;
+        std::unique_ptr<Window> m_Window;
 
     public:
         static ObeliskAPI& Get();
@@ -26,7 +24,7 @@ class OBELISK_API ObeliskAPI {
         void Run();
         void Shutdown();
 
-        Window* GetWindow() { return m_Window; };
+        Window* GetWindow() { return m_Window.get(); };
 
     private:
         ObeliskAPI() = default;

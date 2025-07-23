@@ -76,4 +76,9 @@ void Window::Tick() {
     glfwPollEvents();
     glfwSwapBuffers(m_Window);
 }
+
+bool Window::ShouldClose() const {
+    return glfwWindowShouldClose(m_Window);
+}
+
 }  // namespace Obelisk
