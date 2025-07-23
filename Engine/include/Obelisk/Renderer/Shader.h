@@ -1,6 +1,7 @@
 #pragma once
 
 #include "ObeliskPCH.h"
+#include "Obelisk/Core/AssetManager.h"
 
 namespace Obelisk {
 class OBELISK_API Shader {

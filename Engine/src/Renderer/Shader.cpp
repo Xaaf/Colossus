@@ -44,19 +44,35 @@ std::string Shader::LoadShaderSource(const std::string& filepath) {
     file.exceptions(std::ifstream::failbit | std::ifstream::badbit);
 
     try {
-        file.open("../assets/" + filepath);
+        // Use AssetManager to get the full path
+        std::filesystem::path fullPath =
+            AssetManager::GetAssetPath("shaders/" + filepath);
+
+        // Check if asset exists before trying to open
+        if (!AssetManager::AssetExists("shaders/" + filepath)) {
+            LOG_ERROR("Shader file not found: " << filepath);
+            LOG_ERROR("Searched path: " << fullPath.string());
+            LOG_ERROR(AssetManager::GetDebugInfo());
+            return "";
+        }
+
+        file.open(fullPath);
 
         if (!file.is_open()) {
-            LOG_ERROR("Failed to open file " + filepath);
+            LOG_ERROR("Failed to open shader file: " << fullPath.string());
+            return "";
         }
 
         std::stringstream buffer;
         buffer << file.rdbuf();
         file.close();
 
+        LOG_TRACE("Successfully loaded shader: " << fullPath.string());
         return buffer.str();
     } catch (const std::ifstream::failure& e) {
-        LOG_ERROR("Failed to read file \"" << filepath << "\"");
+        LOG_ERROR("Failed to read shader file \"" << filepath
+                                                  << "\": " << e.what());
+        LOG_ERROR(AssetManager::GetDebugInfo());
         return "";
     }
 }

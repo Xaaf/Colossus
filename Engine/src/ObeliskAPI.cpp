@@ -25,6 +25,10 @@ void ObeliskAPI::SetShutdownCallback(std::function<void()> callback) {
 void ObeliskAPI::Init(int width, int height, const char* title) {
     LOG_INFO("Initializing Obelisk Engine...");
 
+    // Initialize AssetManager first
+    AssetManager::Initialize("assets");
+    LOG_INFO(AssetManager::GetDebugInfo());
+
     m_Window = std::make_unique<Window>();
     if (!m_Window->Create(1280, 720, "Heroes of Colossus")) {
         LOG_ERROR("Failed to create window!");

@@ -29,9 +29,8 @@ void MyInit() {
 
     entity = Obelisk::Entity(
         std::make_shared<Obelisk::Mesh>(meshVertices, meshIndices),
-        std::make_shared<Obelisk::Shader>("shaders/basic.vert",
-                                          "shaders/basic.frag"),
-        std::make_shared<Obelisk::Texture>("textures/Testing.jpg"));
+        std::make_shared<Obelisk::Shader>("basic.vert", "basic.frag"),
+        std::make_shared<Obelisk::Texture>("Testing.jpg"));
     scene.AddEntity(&entity);
 
     // Simple test - no rotation, just position at origin
