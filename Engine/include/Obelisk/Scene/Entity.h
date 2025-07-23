@@ -1,10 +1,10 @@
 #pragma once
 
-#include "ObeliskPCH.h"
 #include "Obelisk/Components/Transform.h"
 #include "Obelisk/Renderer/Mesh.h"
 #include "Obelisk/Renderer/Shader.h"
 #include "Obelisk/Renderer/Texture.h"
+#include "ObeliskPCH.h"
 
 namespace Obelisk {
 class OBELISK_API Entity {
@@ -30,4 +30,4 @@ class OBELISK_API Entity {
 
         void Draw() const;
 };
-}
+}  // namespace Obelisk

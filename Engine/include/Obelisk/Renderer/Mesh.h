@@ -4,9 +4,9 @@
 
 namespace Obelisk {
 struct OBELISK_API Vertex {
-    glm::vec3 Position;
-    glm::vec3 Color;
-    glm::vec2 TextureCoords;
+        glm::vec3 Position;
+        glm::vec3 Color;
+        glm::vec2 TextureCoords;
 };
 
 class OBELISK_API Mesh {
@@ -30,12 +30,8 @@ class OBELISK_API Mesh {
         void Bind() const;
         static void Unbind();
 
-        [[nodiscard]] int GetNumberOfVertices() const {
-            return m_NumVertices;
-        };
+        [[nodiscard]] int GetNumberOfVertices() const { return m_NumVertices; };
 
-        [[nodiscard]] int GetNumberOfIndices() const {
-            return m_NumIndices;
-        };
+        [[nodiscard]] int GetNumberOfIndices() const { return m_NumIndices; };
 };
-}
+}  // namespace Obelisk

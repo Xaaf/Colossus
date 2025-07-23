@@ -103,9 +103,7 @@ IndentCaseBlocks: false
 IndentCaseLabels: true
 IndentExternBlock: AfterExternBlock
 IndentGotoLabels: true
-IndentMacros: true
-IndentPreprocessor: true
-IndentPPDirectives: None
+IndentPPDirectives: BeforeHash
 IndentRequires: false
 IndentWidth: 4
 IndentWrappedFunctionNames: false

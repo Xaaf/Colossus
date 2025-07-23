@@ -11,7 +11,8 @@ class OBELISK_API Shader {
         char m_InfoLog[512] = {};
 
         static std::string LoadShaderSource(const std::string& filepath);
-        [[nodiscard]] unsigned int GetUniformLocation(const std::string& uniformName) const;
+        [[nodiscard]] unsigned int GetUniformLocation(
+            const std::string& uniformName) const;
         void CheckCompileErrors(unsigned int shader, const std::string& type);
 
     public:
@@ -30,4 +31,4 @@ class OBELISK_API Shader {
         void SetVec4(const std::string& name, const glm::vec4& value) const;
         void SetMat4(const std::string& name, const glm::mat4& value) const;
 };
-}
+}  // namespace Obelisk

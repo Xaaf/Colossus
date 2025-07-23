@@ -1,7 +1,7 @@
 #pragma once
 
-#include "ObeliskPCH.h"
 #include "Obelisk/Scene/Scene.h"
+#include "ObeliskPCH.h"
 
 namespace Obelisk {
 class Window {
@@ -22,4 +22,4 @@ class Window {
             return glfwWindowShouldClose(m_Window);
         };
 };
-}
+}  // namespace Obelisk

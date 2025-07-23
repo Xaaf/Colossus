@@ -1,8 +1,7 @@
 #pragma once
 
-#include "ObeliskPCH.h"
-
 #include <stb_image.h>
+#include "ObeliskPCH.h"
 
 namespace Obelisk {
 class OBELISK_API Texture {
@@ -16,4 +15,4 @@ class OBELISK_API Texture {
 
         void Bind(unsigned int textureSlot = 0) const;
 };
-}
+}  // namespace Obelisk

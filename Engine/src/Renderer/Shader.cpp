@@ -1,6 +1,5 @@
 #include "Obelisk/Renderer/Shader.h"
 #include <filesystem>
-
 #include <fstream>
 
 namespace Obelisk {
@@ -27,7 +26,8 @@ std::string Shader::LoadShaderSource(const std::string& filepath) {
 }
 
 unsigned int Shader::GetUniformLocation(const std::string& uniformName) const {
-    const unsigned int location =  glGetUniformLocation(m_ProgramID, uniformName.c_str());
+    const unsigned int location =
+        glGetUniformLocation(m_ProgramID, uniformName.c_str());
     return location;
 }
 
@@ -44,8 +44,8 @@ void Shader::CheckCompileErrors(unsigned int shader, const std::string& type) {
 
         if (!m_Success) {
             glGetShaderInfoLog(shader, 512, nullptr, m_InfoLog);
-            LOG_ERROR(
-                "Unable to compile " << type << " shader!\n>" << m_InfoLog);
+            LOG_ERROR("Unable to compile " << type << " shader!\n>"
+                                           << m_InfoLog);
         }
     }
 }
@@ -78,12 +78,9 @@ Shader::Shader(const std::string& vertexPath, const std::string& fragmentPath) {
     glDeleteShader(fragment);
 }
 
-Shader::~Shader() {
-}
+Shader::~Shader() {}
 
-void Shader::Use() const {
-    glUseProgram(m_ProgramID);
-}
+void Shader::Use() const { glUseProgram(m_ProgramID); }
 
 void Shader::SetBool(const std::string& name, bool value) const {
     Use();
@@ -126,4 +123,4 @@ void Shader::SetMat4(const std::string& name, const glm::mat4& value) const {
     glUniformMatrix4fv(GetUniformLocation(name), 1, GL_FALSE, &value[0][0]);
     glUseProgram(0);
 }
-}
+}  // namespace Obelisk

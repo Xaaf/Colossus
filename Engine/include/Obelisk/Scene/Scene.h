@@ -13,4 +13,4 @@ class OBELISK_API Scene {
 
         std::vector<Entity*>& GetEntities() { return m_Entities; }
 };
-}
+}  // namespace Obelisk

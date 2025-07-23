@@ -46,11 +46,7 @@ Mesh::Mesh(std::vector<Vertex> const& vertices,
     LOG_TRACE("MeshID " << m_MeshID << " created");
 }
 
-void Mesh::Bind() const {
-    glBindVertexArray(m_VAO);
-}
+void Mesh::Bind() const { glBindVertexArray(m_VAO); }
 
-void Mesh::Unbind() {
-    glBindVertexArray(0);
-}
-}
+void Mesh::Unbind() { glBindVertexArray(0); }
+}  // namespace Obelisk

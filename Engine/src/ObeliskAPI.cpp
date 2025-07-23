@@ -2,15 +2,13 @@
 
 #define STB_IMAGE_IMPLEMENTATION
 #include <stb_image.h>
-
 #include <utility>
 
 namespace Obelisk {
 ObeliskAPI* ObeliskAPI::s_Instance = nullptr;
 
 ObeliskAPI& ObeliskAPI::Get() {
-    if (!s_Instance)
-        s_Instance = new ObeliskAPI();
+    if (!s_Instance) s_Instance = new ObeliskAPI();
 
     return *s_Instance;
 }
@@ -58,4 +56,4 @@ void ObeliskAPI::Shutdown() {
     LOG_INFO("Shutting down Obelisk Engine...");
     delete m_Window;
 }
-}
+}  // namespace Obelisk

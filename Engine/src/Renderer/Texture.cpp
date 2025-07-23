@@ -13,8 +13,7 @@ Texture::Texture(const std::string& path) {
     int width, height, nrChannels;
     stbi_set_flip_vertically_on_load(true);
     unsigned char* data = stbi_load(("../assets/" + path).c_str(), &width,
-                                    &height,
-                                    &nrChannels, 0);
+                                    &height, &nrChannels, 0);
 
     if (!data) {
         LOG_ERROR("Failed to load texture: " << stbi_failure_reason());
@@ -32,4 +31,4 @@ void Texture::Bind(unsigned int textureSlot) const {
     glActiveTexture(GL_TEXTURE0 + textureSlot);
     glBindTexture(GL_TEXTURE_2D, m_TextureID);
 }
-}
+}  // namespace Obelisk

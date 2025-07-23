@@ -14,29 +14,19 @@ Entity::Entity(std::shared_ptr<Mesh> mesh, std::shared_ptr<Shader> shader,
     m_Texture = texture;
 }
 
-void Entity::SetMesh(std::shared_ptr<Mesh> mesh) {
-    m_Mesh = mesh;
-}
+void Entity::SetMesh(std::shared_ptr<Mesh> mesh) { m_Mesh = mesh; }
 
-void Entity::SetShader(std::shared_ptr<Shader> shader) {
-    m_Shader = shader;
-}
+void Entity::SetShader(std::shared_ptr<Shader> shader) { m_Shader = shader; }
 
 void Entity::SetTexture(std::shared_ptr<Texture> texture) {
     m_Texture = texture;
 }
 
-std::shared_ptr<Mesh> Entity::GetMesh() const {
-    return m_Mesh;
-}
+std::shared_ptr<Mesh> Entity::GetMesh() const { return m_Mesh; }
 
-std::shared_ptr<Shader> Entity::GetShader() const {
-    return m_Shader;
-}
+std::shared_ptr<Shader> Entity::GetShader() const { return m_Shader; }
 
-std::shared_ptr<Texture> Entity::GetTexture() const {
-    return m_Texture;
-}
+std::shared_ptr<Texture> Entity::GetTexture() const { return m_Texture; }
 
 void Entity::Draw() const {
     if (!m_Mesh) {
@@ -59,4 +49,4 @@ void Entity::Draw() const {
                    nullptr);
     m_Mesh->Unbind();
 }
-}
+}  // namespace Obelisk

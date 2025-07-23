@@ -1,9 +1,8 @@
 #include "Obelisk/Renderer/Window.h"
-
-#include "stb_image.h"
 #include "GLFW/glfw3.h"
 #include "Obelisk/Scene/Entity.h"
 #include "Obelisk/Scene/Scene.h"
+#include "stb_image.h"
 
 namespace Obelisk {
 Window::~Window() {
@@ -43,20 +42,18 @@ int Window::Create(int width, int height, const std::string& title) {
     }
 
     glViewport(0, 0, width, height);
-    glfwSetFramebufferSizeCallback(m_Window,
-                                   [](GLFWwindow* window, int width,
-                                      int height) {
-                                       glViewport(0, 0, width, height);
-                                   });
+    glfwSetFramebufferSizeCallback(
+        m_Window, [](GLFWwindow* window, int width, int height) {
+            glViewport(0, 0, width, height);
+        });
 
     glEnable(GL_DEPTH_TEST);
 
-    LOG_INFO("Initialised OpenGL viewport (" << width << "x" << height
-        << ")");
+    LOG_INFO("Initialised OpenGL viewport (" << width << "x" << height << ")");
     LOG_INFO("> GLFW v" << glfwGetVersionString() << ", OpenGL v"
-        << glGetString(GL_VERSION));
+                        << glGetString(GL_VERSION));
     LOG_INFO("> Graphics Card: " << glGetString(GL_RENDERER) << ", "
-        << glGetString(GL_VENDOR));
+                                 << glGetString(GL_VENDOR));
     return 1;
 }
 
@@ -77,4 +74,4 @@ void Window::Tick() {
     glfwPollEvents();
     glfwSwapBuffers(m_Window);
 }
-}
+}  // namespace Obelisk

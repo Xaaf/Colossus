@@ -1,7 +1,7 @@
 #pragma once
 
-#include "ObeliskPCH.h"
 #include "Obelisk/Renderer/Window.h"
+#include "ObeliskPCH.h"
 
 namespace Obelisk {
 class OBELISK_API ObeliskAPI {
@@ -32,4 +32,4 @@ class OBELISK_API ObeliskAPI {
         ObeliskAPI() = default;
         ~ObeliskAPI() = default;
 };
-}
+}  // namespace Obelisk

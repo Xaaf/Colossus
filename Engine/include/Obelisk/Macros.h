@@ -1,11 +1,11 @@
 #pragma once
 
 #ifdef _WIN32
-#ifdef OBELISK_EXPORTS
+    #ifdef OBELISK_EXPORTS
         #define OBELISK_API __declspec(dllexport)
-#else
+    #else
         #define OBELISK_API __declspec(dllimport)
-#endif
+    #endif
 #else
-#define OBELISK_API
+    #define OBELISK_API
 #endif
