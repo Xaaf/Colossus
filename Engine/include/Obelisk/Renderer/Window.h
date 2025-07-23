@@ -3,7 +3,6 @@
 #include "ObeliskPCH.h"
 #include "Obelisk/Scene/Scene.h"
 
-
 namespace Obelisk {
 class OBELISK_API Window {
     private:
