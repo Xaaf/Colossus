@@ -3,12 +3,6 @@
 namespace Obelisk {
 glm::mat4 Transform::GetModelMatrix() const {
     if (m_MatrixDirty) {
-        LOG_DEBUG("Transform", "Recalculating model matrix - Pos("
-                                   << m_Position.x << "," << m_Position.y << ","
-                                   << m_Position.z << ") Rot(" << m_Rotation.x
-                                   << "," << m_Rotation.y << "," << m_Rotation.z
-                                   << ")");
-
         // Dirty matrix, so start from scratch
         m_CachedModelMatrix = glm::mat4(1.0f);
 
