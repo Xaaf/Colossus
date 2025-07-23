@@ -1,10 +1,11 @@
 #pragma once
 
-#include "Obelisk/Scene/Scene.h"
 #include "ObeliskPCH.h"
+#include "Obelisk/Scene/Scene.h"
+
 
 namespace Obelisk {
-class Window {
+class OBELISK_API Window {
     private:
         GLFWwindow* m_Window = nullptr;
         Scene* m_Scene = nullptr;
