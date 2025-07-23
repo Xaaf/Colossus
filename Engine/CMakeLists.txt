@@ -36,6 +36,8 @@ add_library(Obelisk SHARED
         src/ObeliskAPI.cpp
         src/ObeliskPCH.cpp
         src/Components/Transform.cpp
+        src/Input/Keyboard.cpp
+        src/Input/Mouse.cpp
         src/Renderer/Mesh.cpp
         src/Renderer/Shader.cpp
         src/Renderer/Texture.cpp

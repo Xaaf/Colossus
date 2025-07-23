@@ -1,4 +1,6 @@
 #include "Obelisk/Renderer/Window.h"
+#include "Obelisk/Input/Keyboard.h"
+#include "Obelisk/Input/Mouse.h"
 #include "Obelisk/Scene/Entity.h"
 #include "Obelisk/Scene/Scene.h"
 #include "stb_image.h"
@@ -48,6 +50,22 @@ int Window::Create(int width, int height, const std::string& title) {
         m_Window, [](GLFWwindow* window, int width, int height) {
             glViewport(0, 0, width, height);
         });
+
+    // Set input callbacks
+    glfwSetKeyCallback(m_Window, [](GLFWwindow* window, int key, int scancode,
+                                    int action, int mods) {
+        Keyboard::getInstance().registerAction(key, action);
+    });
+
+    glfwSetMouseButtonCallback(
+        m_Window, [](GLFWwindow* window, int button, int action, int mods) {
+            Mouse::getInstance().registerAction(button, action);
+        });
+
+    glfwSetCursorPosCallback(m_Window,
+                             [](GLFWwindow* window, double xpos, double ypos) {
+                                 Mouse::getInstance().registerMove(xpos, ypos);
+                             });
 
     glEnable(GL_DEPTH_TEST);
 
