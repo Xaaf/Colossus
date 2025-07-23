@@ -8,8 +8,6 @@ Window::~Window() {
     if (m_Window) {
         glfwDestroyWindow(m_Window);
     }
-
-    glfwTerminate();
 }
 
 int Window::Create(int width, int height, const std::string& title) {

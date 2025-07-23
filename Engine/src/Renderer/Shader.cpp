@@ -3,6 +3,42 @@
 #include <fstream>
 
 namespace Obelisk {
+Shader::Shader(const std::string& vertexPath, const std::string& fragmentPath) {
+    std::string vertexSource = LoadShaderSource(vertexPath);
+    const char* vertexCStr = vertexSource.c_str();
+
+    std::string fragmentSource = LoadShaderSource(fragmentPath);
+    const char* fragmentCStr = fragmentSource.c_str();
+
+    unsigned int vertex = glCreateShader(GL_VERTEX_SHADER);
+    glShaderSource(vertex, 1, &vertexCStr, nullptr);
+    glCompileShader(vertex);
+    CheckCompileErrors(vertex, "vertex");
+
+    unsigned int fragment = glCreateShader(GL_FRAGMENT_SHADER);
+    glShaderSource(fragment, 1, &fragmentCStr, nullptr);
+    glCompileShader(fragment);
+    CheckCompileErrors(fragment, "fragment");
+
+    m_ProgramID = glCreateProgram();
+    glAttachShader(m_ProgramID, vertex);
+    glAttachShader(m_ProgramID, fragment);
+    glLinkProgram(m_ProgramID);
+
+    CheckCompileErrors(m_ProgramID, "program");
+
+    glDeleteShader(vertex);
+    glDeleteShader(fragment);
+}
+
+Shader::~Shader() {
+    if (m_ProgramID) {
+        glDeleteProgram(m_ProgramID);
+        LOG_TRACE("ShaderProgramID " << m_ProgramID << " destroyed.");
+        m_ProgramID = 0;
+    }
+}
+
 std::string Shader::LoadShaderSource(const std::string& filepath) {
     std::ifstream file;
     file.exceptions(std::ifstream::failbit | std::ifstream::badbit);
@@ -49,36 +85,6 @@ void Shader::CheckCompileErrors(unsigned int shader, const std::string& type) {
         }
     }
 }
-
-Shader::Shader(const std::string& vertexPath, const std::string& fragmentPath) {
-    std::string vertexSource = LoadShaderSource(vertexPath);
-    const char* vertexCStr = vertexSource.c_str();
-
-    std::string fragmentSource = LoadShaderSource(fragmentPath);
-    const char* fragmentCStr = fragmentSource.c_str();
-
-    unsigned int vertex = glCreateShader(GL_VERTEX_SHADER);
-    glShaderSource(vertex, 1, &vertexCStr, nullptr);
-    glCompileShader(vertex);
-    CheckCompileErrors(vertex, "vertex");
-
-    unsigned int fragment = glCreateShader(GL_FRAGMENT_SHADER);
-    glShaderSource(fragment, 1, &fragmentCStr, nullptr);
-    glCompileShader(fragment);
-    CheckCompileErrors(fragment, "fragment");
-
-    m_ProgramID = glCreateProgram();
-    glAttachShader(m_ProgramID, vertex);
-    glAttachShader(m_ProgramID, fragment);
-    glLinkProgram(m_ProgramID);
-
-    CheckCompileErrors(m_ProgramID, "program");
-
-    glDeleteShader(vertex);
-    glDeleteShader(fragment);
-}
-
-Shader::~Shader() {}
 
 void Shader::Use() const { glUseProgram(m_ProgramID); }
 

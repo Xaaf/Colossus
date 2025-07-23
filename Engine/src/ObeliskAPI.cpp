@@ -54,6 +54,15 @@ void ObeliskAPI::Run() {
 
 void ObeliskAPI::Shutdown() {
     LOG_INFO("Shutting down Obelisk Engine...");
-    delete m_Window;
+
+    if (m_Window) {
+        delete m_Window;
+        m_Window = nullptr;
+    }
+    glfwTerminate();
+
+    if (m_ShutdownCallback) {
+        m_ShutdownCallback();
+    }
 }
 }  // namespace Obelisk

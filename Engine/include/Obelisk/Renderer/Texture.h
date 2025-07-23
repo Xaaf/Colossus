@@ -11,7 +11,7 @@ class OBELISK_API Texture {
     public:
         Texture() = default;
         Texture(const std::string& path);
-        ~Texture() = default;
+        ~Texture();
 
         void Bind(unsigned int textureSlot = 0) const;
 };

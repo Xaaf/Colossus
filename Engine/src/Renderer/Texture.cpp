@@ -27,6 +27,14 @@ Texture::Texture(const std::string& path) {
     stbi_image_free(data);
 }
 
+Texture::~Texture() {
+    if (m_TextureID) {
+        glDeleteTextures(1, &m_TextureID);
+        LOG_TRACE("Texture with ID " << m_TextureID << " destroyed.");
+        m_TextureID = 0;
+    }
+}
+
 void Texture::Bind(unsigned int textureSlot) const {
     glActiveTexture(GL_TEXTURE0 + textureSlot);
     glBindTexture(GL_TEXTURE_2D, m_TextureID);

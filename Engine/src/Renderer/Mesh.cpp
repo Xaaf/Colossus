@@ -46,6 +46,22 @@ Mesh::Mesh(std::vector<Vertex> const& vertices,
     LOG_TRACE("MeshID " << m_MeshID << " created");
 }
 
+Mesh::~Mesh() {
+    if (m_VAO) {
+        glDeleteVertexArrays(1, &m_VAO);
+    }
+
+    if (m_VBO) {
+        glDeleteBuffers(1, &m_VBO);
+    }
+
+    if (m_EBO) {
+        glDeleteBuffers(1, &m_EBO);
+    }
+
+    LOG_TRACE("MeshID " << m_MeshID << " destroyed");
+}
+
 void Mesh::Bind() const { glBindVertexArray(m_VAO); }
 
 void Mesh::Unbind() { glBindVertexArray(0); }
