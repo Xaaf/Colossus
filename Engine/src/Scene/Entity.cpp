@@ -46,7 +46,7 @@ void Entity::Draw(const Camera& camera) const {
     glm::mat4 modelMatrix = m_Transform.GetModelMatrix();
     glm::mat4 viewMatrix = camera.GetViewMatrix();
     glm::mat4 projectionMatrix = camera.GetProjectionMatrix();
-    
+
     m_Shader->SetMat4("model", modelMatrix);
     m_Shader->SetMat4("view", viewMatrix);
     m_Shader->SetMat4("projection", projectionMatrix);

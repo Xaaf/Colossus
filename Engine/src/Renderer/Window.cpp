@@ -1,10 +1,11 @@
 #include "Obelisk/Renderer/Window.h"
+#include "Obelisk/Core/Camera.h"
 #include "Obelisk/Input/Keyboard.h"
 #include "Obelisk/Input/Mouse.h"
 #include "Obelisk/Scene/Entity.h"
 #include "Obelisk/Scene/Scene.h"
-#include "Obelisk/Core/Camera.h"
 #include "stb_image.h"
+
 
 namespace Obelisk {
 Window::~Window() {

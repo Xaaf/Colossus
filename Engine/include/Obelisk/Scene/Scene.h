@@ -46,7 +46,8 @@ class OBELISK_API Scene {
     private:
         std::vector<Entity*>
             m_Entities;  ///< Collection of entities in this scene (not owned)
-        Camera* m_Camera = nullptr;  ///< Active camera for this scene (not owned)
+        Camera* m_Camera =
+            nullptr;  ///< Active camera for this scene (not owned)
 
     public:
         /**
@@ -84,7 +85,7 @@ class OBELISK_API Scene {
         /**
          * @brief Set the active camera for this scene.
          *
-         * Sets the camera that will be used for rendering all entities in 
+         * Sets the camera that will be used for rendering all entities in
          * this scene. The scene does not take ownership of the camera.
          *
          * @param camera Pointer to the camera (scene does not take ownership)

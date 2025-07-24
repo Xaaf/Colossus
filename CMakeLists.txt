@@ -28,3 +28,18 @@ foreach(TEXTURE_FILE ${TEXTURE_FILES})
     get_filename_component(FILENAME ${TEXTURE_FILE} NAME)
     configure_file(${TEXTURE_FILE} ${CMAKE_BINARY_DIR}/assets/textures/${FILENAME} COPYONLY)
 endforeach()
+
+# Doxygen documentation target
+find_package(Doxygen)
+if(DOXYGEN_FOUND)
+    add_custom_target(docs
+        COMMAND ${DOXYGEN_EXECUTABLE} ${CMAKE_SOURCE_DIR}/Doxyfile
+        WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+        COMMENT "Generating API documentation with Doxygen"
+        VERBATIM
+    )
+    
+    message(STATUS "Doxygen found. Use 'make docs' or 'cmake --build . --target docs' to generate documentation.")
+else()
+    message(WARNING "Doxygen not found. Documentation target will not be available.")
+endif()

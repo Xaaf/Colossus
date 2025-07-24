@@ -2,6 +2,7 @@
 .vscode/
 build/
 cmake-build-debug/
+docs/
 
 # Compiled Object files
 *.slo
