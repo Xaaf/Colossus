@@ -7,10 +7,14 @@ layout (location = 2) in vec2 aTextureCoord;
 out vec3 color;
 out vec2 textureCoord;
 
-uniform mat4 transform;
+// Separate matrices for proper 3D rendering
+uniform mat4 model;         // Model transformation matrix
+uniform mat4 view;          // View matrix (camera)
+uniform mat4 projection;    // Projection matrix
 
 void main() {
-    gl_Position = transform * vec4(aPos.x, aPos.y, aPos.z, 1.0);
+    // Standard MVP (Model-View-Projection) transformation
+    gl_Position = projection * view * model * vec4(aPos, 1.0);
     color = aColor;
     textureCoord = aTextureCoord;
 }

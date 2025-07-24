@@ -3,6 +3,10 @@
 #include "ObeliskPCH.h"
 #include "Entity.h"
 
+// Forward declaration for Camera
+namespace Obelisk {
+class Camera;
+}
 
 namespace Obelisk {
 
@@ -42,6 +46,7 @@ class OBELISK_API Scene {
     private:
         std::vector<Entity*>
             m_Entities;  ///< Collection of entities in this scene (not owned)
+        Camera* m_Camera = nullptr;  ///< Active camera for this scene (not owned)
 
     public:
         /**
@@ -75,6 +80,23 @@ class OBELISK_API Scene {
          * @note Callers should not store long-term references to this vector
          */
         std::vector<Entity*>& GetEntities() { return m_Entities; }
+
+        /**
+         * @brief Set the active camera for this scene.
+         *
+         * Sets the camera that will be used for rendering all entities in 
+         * this scene. The scene does not take ownership of the camera.
+         *
+         * @param camera Pointer to the camera (scene does not take ownership)
+         */
+        void SetCamera(Camera* camera) { m_Camera = camera; }
+
+        /**
+         * @brief Get the active camera for this scene.
+         *
+         * @return Pointer to the active camera, or nullptr if no camera is set
+         */
+        Camera* GetCamera() const { return m_Camera; }
 };
 
 }  // namespace Obelisk

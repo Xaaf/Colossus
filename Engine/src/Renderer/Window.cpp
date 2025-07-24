@@ -3,6 +3,7 @@
 #include "Obelisk/Input/Mouse.h"
 #include "Obelisk/Scene/Entity.h"
 #include "Obelisk/Scene/Scene.h"
+#include "Obelisk/Core/Camera.h"
 #include "stb_image.h"
 
 namespace Obelisk {
@@ -83,8 +84,18 @@ void Window::Tick() {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     if (m_Scene) {
-        for (auto entity : m_Scene->GetEntities()) {
-            entity->Draw();
+        Camera* camera = m_Scene->GetCamera();
+        if (camera) {
+            // Use camera-based rendering for proper 3D pipeline
+            for (auto entity : m_Scene->GetEntities()) {
+                entity->Draw(*camera);
+            }
+        } else {
+            // Fallback to legacy rendering if no camera is set
+            LOG_WARN("No camera set for scene, using legacy rendering");
+            for (auto entity : m_Scene->GetEntities()) {
+                entity->Draw();
+            }
         }
     } else {
         LOG_WARN("No active scene!");

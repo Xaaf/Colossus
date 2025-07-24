@@ -165,6 +165,9 @@ void MyInit() {
              centerRay.x, centerRay.y, centerRay.z);
 
     Obelisk::ObeliskAPI::Get().GetWindow()->SetScene(&scene);
+
+    // Set the camera for the scene to enable proper 3D rendering
+    scene.SetCamera(&camera);
 }
 
 float timestep = 0.00016f;

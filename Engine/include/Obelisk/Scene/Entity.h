@@ -6,6 +6,11 @@
 #include "Obelisk/Renderer/Shader.h"
 #include "Obelisk/Renderer/Texture.h"
 
+// Forward declaration to avoid circular includes
+namespace Obelisk {
+class Camera;
+}
+
 namespace Obelisk {
 
 /**
@@ -144,17 +149,28 @@ class OBELISK_API Entity {
          *
          * Performs a complete rendering operation for this entity:
          * 1. Binds the shader program
-         * 2. Sets transform matrices as uniforms
+         * 2. Sets model, view, and projection matrices as uniforms
          * 3. Binds the texture to texture unit 0
          * 4. Draws the mesh geometry
          *
          * The entity must have valid mesh, shader, and texture components
          * for rendering to succeed.
          *
+         * @param camera The camera to use for view and projection matrices
          * @note Assumes appropriate OpenGL state has been set up (viewport,
          * etc.)
-         * @note Uses the current projection and view matrices from the
-         * rendering context
+         */
+        void Draw(const Camera& camera) const;
+
+        /**
+         * @brief Legacy render method using transform matrix only.
+         *
+         * This is a fallback rendering method that uses only the entity's
+         * transform matrix without camera view/projection matrices.
+         * Use Draw(const Camera&) for proper 3D rendering instead.
+         *
+         * @deprecated This method is deprecated and should be avoided in new
+         * code
          */
         void Draw() const;
 };
