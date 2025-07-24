@@ -45,8 +45,7 @@ namespace Obelisk {
 class OBELISK_API Transform {
     private:
         glm::vec3 m_Position = {0.0f, 0.0f, 0.0f};  ///< World space position
-        glm::vec3 m_Rotation = {
-            0.0f, 0.0f, 0.0f};  ///< Euler angles in degrees (pitch, yaw, roll)
+        glm::quat m_Rotation = glm::quat(1.0f, 0.0f, 0.0f, 0.0f);  ///< Rotation as quaternion (identity)
         glm::vec3 m_Scale = {1.0f, 1.0f,
                              1.0f};  ///< Scale factors for each axis
 
@@ -93,7 +92,16 @@ class OBELISK_API Transform {
          *
          * @return 3D rotation vector containing pitch, yaw, and roll in degrees
          */
-        glm::vec3 GetRotation() const { return m_Rotation; }
+        glm::vec3 GetRotation() const { 
+            return glm::degrees(glm::eulerAngles(m_Rotation)); 
+        }
+
+        /**
+         * @brief Get the current rotation as a quaternion.
+         *
+         * @return Quaternion representing the current rotation
+         */
+        glm::quat GetRotationQuat() const { return m_Rotation; }
 
         /**
          * @brief Get the current scale factors.
@@ -134,7 +142,7 @@ class OBELISK_API Transform {
          * @param rotation Euler angles in degrees (pitch, yaw, roll)
          */
         void SetRotation(glm::vec3 rotation) {
-            m_Rotation = rotation;
+            m_Rotation = glm::quat(glm::radians(rotation));
             m_MatrixDirty = true;
         }
 
@@ -146,7 +154,29 @@ class OBELISK_API Transform {
          * @param roll Rotation around Z axis in degrees
          */
         void SetRotation(float pitch, float yaw, float roll) {
-            m_Rotation = glm::vec3(pitch, yaw, roll);
+            m_Rotation = glm::quat(glm::radians(glm::vec3(pitch, yaw, roll)));
+            m_MatrixDirty = true;
+        }
+
+        /**
+         * @brief Set the rotation using a quaternion.
+         *
+         * @param quaternion Quaternion representing the desired rotation
+         */
+        void SetRotation(const glm::quat& quaternion) {
+            m_Rotation = quaternion;
+            m_MatrixDirty = true;
+        }
+
+        /**
+         * @brief Set rotation to look at a target position.
+         *
+         * @param target World position to look at
+         * @param up Up vector (default: world up)
+         */
+        void LookAt(const glm::vec3& target, const glm::vec3& up = glm::vec3(0.0f, 1.0f, 0.0f)) {
+            glm::vec3 direction = glm::normalize(target - m_Position);
+            m_Rotation = glm::quatLookAt(direction, up);
             m_MatrixDirty = true;
         }
 
@@ -197,6 +227,40 @@ class OBELISK_API Transform {
         void Rotate(const glm::vec3& eulerDelta);
 
         /**
+         * @brief Apply a relative rotation using a quaternion.
+         *
+         * Multiplies the current rotation by the provided quaternion rotation.
+         *
+         * @param quaternionDelta Quaternion rotation to apply
+         */
+        void Rotate(const glm::quat& quaternionDelta) {
+            m_Rotation = m_Rotation * quaternionDelta;
+            m_MatrixDirty = true;
+        }
+
+        /**
+         * @brief Rotate around a specific axis by an angle.
+         *
+         * @param axis Normalized axis vector to rotate around
+         * @param angleDegrees Angle to rotate in degrees
+         */
+        void RotateAroundAxis(const glm::vec3& axis, float angleDegrees) {
+            glm::quat deltaRotation = glm::angleAxis(glm::radians(angleDegrees), glm::normalize(axis));
+            Rotate(deltaRotation);
+        }
+
+        /**
+         * @brief Spherically interpolate to a target rotation.
+         *
+         * @param targetRotation Target quaternion to interpolate towards
+         * @param t Interpolation factor (0.0 = current rotation, 1.0 = target rotation)
+         */
+        void SlerpRotation(const glm::quat& targetRotation, float t) {
+            m_Rotation = glm::slerp(m_Rotation, targetRotation, t);
+            m_MatrixDirty = true;
+        }
+
+        /**
          * @brief Apply a relative scale to the current scale.
          *
          * Multiplies the current scale factors by the provided scale factors.
@@ -225,7 +289,9 @@ class OBELISK_API Transform {
          *
          * @return Normalized forward direction vector
          */
-        glm::vec3 GetForward() const;
+        glm::vec3 GetForward() const {
+            return m_Rotation * glm::vec3(0.0f, 0.0f, -1.0f);
+        }
 
         /**
          * @brief Get the right direction vector in world space.
@@ -235,7 +301,9 @@ class OBELISK_API Transform {
          *
          * @return Normalized right direction vector
          */
-        glm::vec3 GetRight() const;
+        glm::vec3 GetRight() const {
+            return m_Rotation * glm::vec3(1.0f, 0.0f, 0.0f);
+        }
 
         /**
          * @brief Get the up direction vector in world space.
@@ -245,7 +313,9 @@ class OBELISK_API Transform {
          *
          * @return Normalized up direction vector
          */
-        glm::vec3 GetUp() const;
+        glm::vec3 GetUp() const {
+            return m_Rotation * glm::vec3(0.0f, 1.0f, 0.0f);
+        }
 };
 
 }  // namespace Obelisk

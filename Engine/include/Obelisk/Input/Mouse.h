@@ -6,7 +6,6 @@
 #include <glm/vec2.hpp>
 #include "Obelisk/Input/InputCodes.h"
 
-
 namespace Obelisk {
 /**
  * @brief Manages mouse input for the engine.
