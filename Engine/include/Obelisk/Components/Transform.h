@@ -45,7 +45,8 @@ namespace Obelisk {
 class OBELISK_API Transform {
     private:
         glm::vec3 m_Position = {0.0f, 0.0f, 0.0f};  ///< World space position
-        glm::quat m_Rotation = glm::quat(1.0f, 0.0f, 0.0f, 0.0f);  ///< Rotation as quaternion (identity)
+        glm::quat m_Rotation = glm::quat(
+            1.0f, 0.0f, 0.0f, 0.0f);  ///< Rotation as quaternion (identity)
         glm::vec3 m_Scale = {1.0f, 1.0f,
                              1.0f};  ///< Scale factors for each axis
 
@@ -92,8 +93,8 @@ class OBELISK_API Transform {
          *
          * @return 3D rotation vector containing pitch, yaw, and roll in degrees
          */
-        glm::vec3 GetRotation() const { 
-            return glm::degrees(glm::eulerAngles(m_Rotation)); 
+        glm::vec3 GetRotation() const {
+            return glm::degrees(glm::eulerAngles(m_Rotation));
         }
 
         /**
@@ -174,7 +175,8 @@ class OBELISK_API Transform {
          * @param target World position to look at
          * @param up Up vector (default: world up)
          */
-        void LookAt(const glm::vec3& target, const glm::vec3& up = glm::vec3(0.0f, 1.0f, 0.0f)) {
+        void LookAt(const glm::vec3& target,
+                    const glm::vec3& up = glm::vec3(0.0f, 1.0f, 0.0f)) {
             glm::vec3 direction = glm::normalize(target - m_Position);
             m_Rotation = glm::quatLookAt(direction, up);
             m_MatrixDirty = true;
@@ -245,7 +247,8 @@ class OBELISK_API Transform {
          * @param angleDegrees Angle to rotate in degrees
          */
         void RotateAroundAxis(const glm::vec3& axis, float angleDegrees) {
-            glm::quat deltaRotation = glm::angleAxis(glm::radians(angleDegrees), glm::normalize(axis));
+            glm::quat deltaRotation = glm::angleAxis(glm::radians(angleDegrees),
+                                                     glm::normalize(axis));
             Rotate(deltaRotation);
         }
 
@@ -253,7 +256,8 @@ class OBELISK_API Transform {
          * @brief Spherically interpolate to a target rotation.
          *
          * @param targetRotation Target quaternion to interpolate towards
-         * @param t Interpolation factor (0.0 = current rotation, 1.0 = target rotation)
+         * @param t Interpolation factor (0.0 = current rotation, 1.0 = target
+         * rotation)
          */
         void SlerpRotation(const glm::quat& targetRotation, float t) {
             m_Rotation = glm::slerp(m_Rotation, targetRotation, t);

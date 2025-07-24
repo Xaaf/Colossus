@@ -3,14 +3,15 @@
 namespace Obelisk {
 glm::mat4 Transform::GetModelMatrix() const {
     if (m_MatrixDirty) {
-        // Build transformation matrix using TRS order (Scale -> Rotate -> Translate)
+        // Build transformation matrix using TRS order (Scale -> Rotate ->
+        // Translate)
         glm::mat4 translation = glm::translate(glm::mat4(1.0f), m_Position);
         glm::mat4 rotation = glm::mat4_cast(m_Rotation);
         glm::mat4 scale = glm::scale(glm::mat4(1.0f), m_Scale);
-        
+
         // Combine transformations: T * R * S
         m_CachedModelMatrix = translation * rotation * scale;
-        
+
         m_MatrixDirty = false;
     }
 

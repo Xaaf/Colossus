@@ -2,13 +2,14 @@
 
 #include <chrono>
 #include <ctime>
+#include <format>
 #include <iomanip>
 #include <iostream>
 #include <sstream>
 #include <string>
-#include <format>
 #include "Colours.h"
 #include "LogLevels.h"
+
 
 /**
  * @brief Fetches the current time in the `HH:MM:SS.mmm` format.
@@ -26,7 +27,8 @@ inline std::string currentTimeFormatted() {
 #ifdef _WIN32
     localtime_s(&local_tm, &now_c);  // Use safer localtime_s on Windows
 #else
-    local_tm = *std::localtime(&now_c);  // Use standard localtime on other platforms
+    local_tm =
+        *std::localtime(&now_c);  // Use standard localtime on other platforms
 #endif
 
     std::ostringstream oss;
@@ -44,12 +46,12 @@ inline std::string currentTimeFormatted() {
  * @param tag Optional tag to append to the filename
  * @return Formatted filename string
  */
-inline std::string currentFileFormatted(const std::string& file, const std::string& tag) {
+inline std::string currentFileFormatted(const std::string& file,
+                                        const std::string& tag) {
     size_t last_slash = file.find_last_of("/\\");
-    std::string filename = (last_slash == std::string::npos)
-                           ? file
-                           : file.substr(last_slash + 1);
-    
+    std::string filename =
+        (last_slash == std::string::npos) ? file : file.substr(last_slash + 1);
+
     // Remove file extension
     size_t last_dot = filename.find_last_of(".");
     if (last_dot != std::string::npos) {
@@ -75,9 +77,9 @@ inline std::string currentFileFormatted(const std::string& file, const std::stri
  * @param format Format string (std::format compatible)
  * @param args Arguments for the format string
  */
-template<typename... Args>
-void LogImpl(int level, const char* color, const char* levelStr, 
-             const char* file, const std::string& tag, 
+template <typename... Args>
+void LogImpl(int level, const char* color, const char* levelStr,
+             const char* file, const std::string& tag,
              const std::string& format, Args&&... args) {
     if (level >= CURRENT_LOG_LEVEL) {
         std::string message;
@@ -90,10 +92,9 @@ void LogImpl(int level, const char* color, const char* levelStr,
         } else {
             message = format;
         }
-        
-        std::cerr << WHITE << currentTimeFormatted() << " " << color
-                  << "[" << levelStr << ": " 
-                  << currentFileFormatted(file, tag) << "] "
+
+        std::cerr << WHITE << currentTimeFormatted() << " " << color << "["
+                  << levelStr << ": " << currentFileFormatted(file, tag) << "] "
                   << message << RESET << std::endl;
     }
 }
@@ -104,64 +105,74 @@ void LogImpl(int level, const char* color, const char* levelStr,
  * @brief Log a trace message.
  * Usage: LOG_TRACE("Simple message") or LOG_TRACE("Format {}: {}", var1, var2)
  */
-#define LOG_TRACE(format, ...) \
-    ::LogImpl(LOG_LEVEL_TRACE, CYAN, "TRC", __FILE__, "", format __VA_OPT__(,) __VA_ARGS__)
+#define LOG_TRACE(format, ...)                            \
+    ::LogImpl(LOG_LEVEL_TRACE, CYAN, "TRC", __FILE__, "", \
+              format __VA_OPT__(, ) __VA_ARGS__)
 
 /**
  * @brief Log a trace message with a tag.
  * Usage: LOG_TRACE_TAG("MyTag", "Format {}: {}", var1, var2)
  */
-#define LOG_TRACE_TAG(tag, format, ...) \
-    ::LogImpl(LOG_LEVEL_TRACE, CYAN, "TRC", __FILE__, tag, format __VA_OPT__(,) __VA_ARGS__)
+#define LOG_TRACE_TAG(tag, format, ...)                    \
+    ::LogImpl(LOG_LEVEL_TRACE, CYAN, "TRC", __FILE__, tag, \
+              format __VA_OPT__(, ) __VA_ARGS__)
 
 /**
  * @brief Log a debug message.
  * Usage: LOG_DEBUG("Simple message") or LOG_DEBUG("Value: {}", someValue)
  */
-#define LOG_DEBUG(format, ...) \
-    ::LogImpl(LOG_LEVEL_DEBUG, MAGENTA, "DBG", __FILE__, "", format __VA_OPT__(,) __VA_ARGS__)
+#define LOG_DEBUG(format, ...)                               \
+    ::LogImpl(LOG_LEVEL_DEBUG, MAGENTA, "DBG", __FILE__, "", \
+              format __VA_OPT__(, ) __VA_ARGS__)
 
 /**
  * @brief Log a debug message with a tag.
  */
-#define LOG_DEBUG_TAG(tag, format, ...) \
-    ::LogImpl(LOG_LEVEL_DEBUG, MAGENTA, "DBG", __FILE__, tag, format __VA_OPT__(,) __VA_ARGS__)
+#define LOG_DEBUG_TAG(tag, format, ...)                       \
+    ::LogImpl(LOG_LEVEL_DEBUG, MAGENTA, "DBG", __FILE__, tag, \
+              format __VA_OPT__(, ) __VA_ARGS__)
 
 /**
  * @brief Log an info message.
  * Usage: LOG_INFO("Player position: ({}, {}, {})", x, y, z)
  */
-#define LOG_INFO(format, ...) \
-    ::LogImpl(LOG_LEVEL_INFO, WHITE, "INF", __FILE__, "", format __VA_OPT__(,) __VA_ARGS__)
+#define LOG_INFO(format, ...)                             \
+    ::LogImpl(LOG_LEVEL_INFO, WHITE, "INF", __FILE__, "", \
+              format __VA_OPT__(, ) __VA_ARGS__)
 
 /**
  * @brief Log an info message with a tag.
  */
-#define LOG_INFO_TAG(tag, format, ...) \
-    ::LogImpl(LOG_LEVEL_INFO, WHITE, "INF", __FILE__, tag, format __VA_OPT__(,) __VA_ARGS__)
+#define LOG_INFO_TAG(tag, format, ...)                     \
+    ::LogImpl(LOG_LEVEL_INFO, WHITE, "INF", __FILE__, tag, \
+              format __VA_OPT__(, ) __VA_ARGS__)
 
 /**
  * @brief Log a warning message.
  * Usage: LOG_WARN("Asset not found: {}", filename)
  */
-#define LOG_WARN(format, ...) \
-    ::LogImpl(LOG_LEVEL_WARN, YELLOW, "WRN", __FILE__, "", format __VA_OPT__(,) __VA_ARGS__)
+#define LOG_WARN(format, ...)                              \
+    ::LogImpl(LOG_LEVEL_WARN, YELLOW, "WRN", __FILE__, "", \
+              format __VA_OPT__(, ) __VA_ARGS__)
 
 /**
  * @brief Log a warning message with a tag.
  */
-#define LOG_WARN_TAG(tag, format, ...) \
-    ::LogImpl(LOG_LEVEL_WARN, YELLOW, "WRN", __FILE__, tag, format __VA_OPT__(,) __VA_ARGS__)
+#define LOG_WARN_TAG(tag, format, ...)                      \
+    ::LogImpl(LOG_LEVEL_WARN, YELLOW, "WRN", __FILE__, tag, \
+              format __VA_OPT__(, ) __VA_ARGS__)
 
 /**
  * @brief Log an error message.
  * Usage: LOG_ERROR("Failed to load texture: {}", errorMessage)
  */
-#define LOG_ERROR(format, ...) \
-    ::LogImpl(LOG_LEVEL_ERROR, RED, "ERR", __FILE__, "", format __VA_OPT__(,) __VA_ARGS__)
+#define LOG_ERROR(format, ...)                           \
+    ::LogImpl(LOG_LEVEL_ERROR, RED, "ERR", __FILE__, "", \
+              format __VA_OPT__(, ) __VA_ARGS__)
 
 /**
  * @brief Log an error message with a tag.
  */
-#define LOG_ERROR_TAG(tag, format, ...) \
-    ::LogImpl(LOG_LEVEL_ERROR, RED, "ERR", __FILE__, tag, format __VA_OPT__(,) __VA_ARGS__)
+#define LOG_ERROR_TAG(tag, format, ...)                   \
+    ::LogImpl(LOG_LEVEL_ERROR, RED, "ERR", __FILE__, tag, \
+              format __VA_OPT__(, ) __VA_ARGS__)

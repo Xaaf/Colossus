@@ -70,8 +70,11 @@ int Window::Create(int width, int height, const std::string& title) {
     glEnable(GL_DEPTH_TEST);
 
     LOG_INFO("Initialised OpenGL viewport ({}x{})", width, height);
-    LOG_INFO("> GLFW v{}, OpenGL v{}", glfwGetVersionString(), reinterpret_cast<const char*>(glGetString(GL_VERSION)));
-    LOG_INFO("> Graphics Card: {}, {}", reinterpret_cast<const char*>(glGetString(GL_RENDERER)), reinterpret_cast<const char*>(glGetString(GL_VENDOR)));
+    LOG_INFO("> GLFW v{}, OpenGL v{}", glfwGetVersionString(),
+             reinterpret_cast<const char*>(glGetString(GL_VERSION)));
+    LOG_INFO("> Graphics Card: {}, {}",
+             reinterpret_cast<const char*>(glGetString(GL_RENDERER)),
+             reinterpret_cast<const char*>(glGetString(GL_VENDOR)));
     return 1;
 }
 

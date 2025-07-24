@@ -30,7 +30,8 @@ Texture::Texture(const std::string& path) {
         stbi_load(fullPath.string().c_str(), &width, &height, &nrChannels, 0);
 
     if (!data) {
-        LOG_ERROR("Failed to load texture: {} - {}", fullPath.string(), stbi_failure_reason());
+        LOG_ERROR("Failed to load texture: {} - {}", fullPath.string(),
+                  stbi_failure_reason());
         LOG_ERROR(AssetManager::GetDebugInfo());
         m_TextureID = 0;  // Mark as invalid
         return;
@@ -52,7 +53,8 @@ Texture::Texture(const std::string& path) {
 
     stbi_image_free(data);
 
-    LOG_TRACE("Successfully loaded texture: {} ({}x{}, {} channels)", fullPath.string(), width, height, nrChannels);
+    LOG_TRACE("Successfully loaded texture: {} ({}x{}, {} channels)",
+              fullPath.string(), width, height, nrChannels);
 }
 
 Texture::~Texture() {
