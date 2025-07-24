@@ -38,11 +38,13 @@ void MyInit() {
     entity.GetTransform().SetRotation(0.0f, 0.0f, 45.0f);   // 45° rotation around Z axis
     entity.GetTransform().SetScale(1.0f, 1.0f, 1.0f);
 
-    // Log the rotation for verification
-    LOG_INFO("Applied 45 degree Z rotation to mesh using quaternions");
+    // Log the rotation for verification using new format-based logging
+    glm::vec3 euler = entity.GetTransform().GetRotation();
+    glm::quat quat = entity.GetTransform().GetRotationQuat();
     
-    // Test different rotation methods
-    // entity.GetTransform().RotateAroundAxis(glm::vec3(1.0f, 0.0f, 0.0f), 15.0f);  // Additional 15° around X
+    LOG_INFO("Applied 45 degree Z rotation to mesh using quaternions");
+    LOG_INFO("Euler angles: ({:.2f}, {:.2f}, {:.2f})", euler.x, euler.y, euler.z);
+    LOG_INFO("Quaternion: w={:.3f} x={:.3f} y={:.3f} z={:.3f}", quat.w, quat.x, quat.y, quat.z);
     LOG_INFO("Mesh should appear rotated by 45 degrees");
 
     Obelisk::ObeliskAPI::Get().GetWindow()->SetScene(&scene);

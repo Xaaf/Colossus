@@ -11,7 +11,7 @@ Mouse& Mouse::getInstance() {
 void Mouse::registerAction(int button, int action) {
     // Bounds checking
     if (button < 0 || button > CS_MOUSE_BUTTON_LAST) {
-        LOG_WARN("Invalid mouse button: " << button);
+        LOG_WARN("Invalid mouse button: {}", button);
         return;
     }
     m_Buttons[button] = action != CS_RELEASE;

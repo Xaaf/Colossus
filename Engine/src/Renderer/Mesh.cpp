@@ -43,7 +43,7 @@ Mesh::Mesh(std::vector<Vertex> const& vertices,
     m_NumVertices = vertices.size();
     m_NumIndices = indices.size();
 
-    LOG_TRACE("MeshID " << m_MeshID << " created");
+    LOG_TRACE("MeshID {} created", m_MeshID);
 }
 
 Mesh::~Mesh() {
@@ -59,7 +59,7 @@ Mesh::~Mesh() {
         glDeleteBuffers(1, &m_EBO);
     }
 
-    LOG_TRACE("MeshID " << m_MeshID << " destroyed");
+    LOG_TRACE("MeshID {} destroyed", m_MeshID);
 }
 
 void Mesh::Bind() const { glBindVertexArray(m_VAO); }

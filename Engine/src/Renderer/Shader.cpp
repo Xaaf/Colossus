@@ -34,7 +34,7 @@ Shader::Shader(const std::string& vertexPath, const std::string& fragmentPath) {
 Shader::~Shader() {
     if (m_ProgramID) {
         glDeleteProgram(m_ProgramID);
-        LOG_TRACE("ShaderProgramID " << m_ProgramID << " destroyed.");
+        LOG_TRACE("ShaderProgramID {} destroyed.", m_ProgramID);
         m_ProgramID = 0;
     }
 }
@@ -50,8 +50,8 @@ std::string Shader::LoadShaderSource(const std::string& filepath) {
 
         // Check if asset exists before trying to open
         if (!AssetManager::AssetExists("shaders/" + filepath)) {
-            LOG_ERROR("Shader file not found: " << filepath);
-            LOG_ERROR("Searched path: " << fullPath.string());
+            LOG_ERROR("Shader file not found: {}", filepath);
+            LOG_ERROR("Searched path: {}", fullPath.string());
             LOG_ERROR(AssetManager::GetDebugInfo());
             return "";
         }
@@ -59,7 +59,7 @@ std::string Shader::LoadShaderSource(const std::string& filepath) {
         file.open(fullPath);
 
         if (!file.is_open()) {
-            LOG_ERROR("Failed to open shader file: " << fullPath.string());
+            LOG_ERROR("Failed to open shader file: {}", fullPath.string());
             return "";
         }
 
@@ -67,11 +67,10 @@ std::string Shader::LoadShaderSource(const std::string& filepath) {
         buffer << file.rdbuf();
         file.close();
 
-        LOG_TRACE("Successfully loaded shader: " << fullPath.string());
+        LOG_TRACE("Successfully loaded shader: {}", fullPath.string());
         return buffer.str();
     } catch (const std::ifstream::failure& e) {
-        LOG_ERROR("Failed to read shader file \"" << filepath
-                                                  << "\": " << e.what());
+        LOG_ERROR("Failed to read shader file \"{}\": {}", filepath, e.what());
         LOG_ERROR(AssetManager::GetDebugInfo());
         return "";
     }
@@ -89,15 +88,14 @@ void Shader::CheckCompileErrors(unsigned int shader, const std::string& type) {
 
         if (!m_Success) {
             glGetProgramInfoLog(shader, 512, nullptr, m_InfoLog);
-            LOG_ERROR("Unable to link shader program!\n>" << m_InfoLog);
+            LOG_ERROR("Unable to link shader program!\n>{}", m_InfoLog);
         }
     } else {
         glGetShaderiv(shader, GL_COMPILE_STATUS, &m_Success);
 
         if (!m_Success) {
             glGetShaderInfoLog(shader, 512, nullptr, m_InfoLog);
-            LOG_ERROR("Unable to compile " << type << " shader!\n>"
-                                           << m_InfoLog);
+            LOG_ERROR("Unable to compile {} shader!\n>{}", type, m_InfoLog);
         }
     }
 }

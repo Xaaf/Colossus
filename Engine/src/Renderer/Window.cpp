@@ -20,7 +20,7 @@ int Window::Create(int width, int height, const std::string& title) {
 
     // Set error callback for better debugging
     glfwSetErrorCallback([](int error, const char* description) {
-        LOG_ERROR("GLFW Error " << error << ": " << description);
+        LOG_ERROR("GLFW Error {}: {}", error, description);
     });
 
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
@@ -69,11 +69,9 @@ int Window::Create(int width, int height, const std::string& title) {
 
     glEnable(GL_DEPTH_TEST);
 
-    LOG_INFO("Initialised OpenGL viewport (" << width << "x" << height << ")");
-    LOG_INFO("> GLFW v" << glfwGetVersionString() << ", OpenGL v"
-                        << glGetString(GL_VERSION));
-    LOG_INFO("> Graphics Card: " << glGetString(GL_RENDERER) << ", "
-                                 << glGetString(GL_VENDOR));
+    LOG_INFO("Initialised OpenGL viewport ({}x{})", width, height);
+    LOG_INFO("> GLFW v{}, OpenGL v{}", glfwGetVersionString(), reinterpret_cast<const char*>(glGetString(GL_VERSION)));
+    LOG_INFO("> Graphics Card: {}, {}", reinterpret_cast<const char*>(glGetString(GL_RENDERER)), reinterpret_cast<const char*>(glGetString(GL_VENDOR)));
     return 1;
 }
 

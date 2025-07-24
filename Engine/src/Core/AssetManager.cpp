@@ -17,12 +17,10 @@ void AssetManager::Initialize(const std::filesystem::path& basePath) {
     s_AssetBasePath = std::filesystem::absolute(basePath);
     s_Initialized = true;
 
-    LOG_INFO("AssetManager initialized with base path: "
-             << s_AssetBasePath.string());
+    LOG_INFO("AssetManager initialized with base path: {}", s_AssetBasePath.string());
 
     if (!std::filesystem::exists(s_AssetBasePath)) {
-        LOG_WARN(
-            "Asset base path does not exist: " << s_AssetBasePath.string());
+        LOG_WARN("Asset base path does not exist: {}", s_AssetBasePath.string());
     }
 }
 
@@ -37,8 +35,7 @@ void AssetManager::AutoInitialize() {
     } else {
         // Fallback to current directory + assets
         Initialize("assets");
-        LOG_WARN(
-            "Could not auto-detect assets directory, using fallback: assets/");
+        LOG_WARN("Could not auto-detect assets directory, using fallback: assets/");
     }
 }
 
@@ -61,8 +58,7 @@ bool AssetManager::AssetExists(const std::string& relativePath) {
     bool exists = std::filesystem::exists(fullPath);
 
     if (!exists) {
-        LOG_TRACE("Asset not found: " << relativePath << " (checked: "
-                                      << fullPath.string() << ")");
+        LOG_TRACE("Asset not found: {} (checked: {})", relativePath, fullPath.string());
     }
 
     return exists;
@@ -122,8 +118,7 @@ std::filesystem::path AssetManager::FindAssetsDirectory() {
             bool hasTextures = std::filesystem::exists(normalized / "textures");
 
             if (hasShaders || hasTextures) {
-                LOG_INFO(
-                    "Auto-detected assets directory: " << normalized.string());
+                LOG_INFO("Auto-detected assets directory: {}", normalized.string());
                 return normalized;
             }
         }
@@ -131,8 +126,7 @@ std::filesystem::path AssetManager::FindAssetsDirectory() {
 
     LOG_WARN("Could not auto-detect assets directory. Searched locations:");
     for (const auto& candidate : candidatePaths) {
-        LOG_WARN(
-            "  - " << std::filesystem::weakly_canonical(candidate).string());
+        LOG_WARN("  - {}", std::filesystem::weakly_canonical(candidate).string());
     }
 
     return {};
@@ -164,9 +158,7 @@ std::filesystem::path AssetManager::GetExecutableDirectory() {
 #endif
 
     // Fallback to current working directory
-    LOG_WARN(
-        "Could not determine executable directory, using current working "
-        "directory");
+    LOG_WARN("Could not determine executable directory, using current working directory");
     return std::filesystem::current_path();
 }
 

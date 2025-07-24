@@ -19,8 +19,8 @@ Texture::Texture(const std::string& path) {
 
     // Check if asset exists before trying to load
     if (!AssetManager::AssetExists("textures/" + path)) {
-        LOG_ERROR("Texture file not found: " << path);
-        LOG_ERROR("Searched path: " << fullPath.string());
+        LOG_ERROR("Texture file not found: {}", path);
+        LOG_ERROR("Searched path: {}", fullPath.string());
         LOG_ERROR(AssetManager::GetDebugInfo());
         m_TextureID = 0;  // Mark as invalid
         return;
@@ -30,8 +30,7 @@ Texture::Texture(const std::string& path) {
         stbi_load(fullPath.string().c_str(), &width, &height, &nrChannels, 0);
 
     if (!data) {
-        LOG_ERROR("Failed to load texture: " << fullPath.string() << " - "
-                                             << stbi_failure_reason());
+        LOG_ERROR("Failed to load texture: {} - {}", fullPath.string(), stbi_failure_reason());
         LOG_ERROR(AssetManager::GetDebugInfo());
         m_TextureID = 0;  // Mark as invalid
         return;
@@ -53,15 +52,13 @@ Texture::Texture(const std::string& path) {
 
     stbi_image_free(data);
 
-    LOG_TRACE("Successfully loaded texture: " << fullPath.string() << " ("
-                                              << width << "x" << height << ", "
-                                              << nrChannels << " channels)");
+    LOG_TRACE("Successfully loaded texture: {} ({}x{}, {} channels)", fullPath.string(), width, height, nrChannels);
 }
 
 Texture::~Texture() {
     if (m_TextureID) {
         glDeleteTextures(1, &m_TextureID);
-        LOG_TRACE("Texture with ID " << m_TextureID << " destroyed.");
+        LOG_TRACE("Texture with ID {} destroyed.", m_TextureID);
         m_TextureID = 0;
     }
 }

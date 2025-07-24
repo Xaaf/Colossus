@@ -11,7 +11,7 @@ Keyboard& Keyboard::getInstance() {
 void Keyboard::registerAction(int key, int action) {
     // Bounds checking
     if (key < 0 || key > CS_KEY_LAST) {
-        LOG_WARN("Invalid key: " << key);
+        LOG_WARN("Invalid key: {}", key);
         return;
     }
 
