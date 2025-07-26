@@ -4,13 +4,14 @@
 #include "ObeliskPCH.h"
 #include <array>
 #include <glm/vec2.hpp>
+#include <unordered_set>
 #include "Obelisk/Input/InputCodes.h"
 
 namespace Obelisk {
 /**
  * @brief Manages mouse input for the engine.
  *
- * Provides a singleton interface to handle mouse events. It allows registering
+ * Provides static methods to handle mouse events. It allows registering
  * per-button actions, as well as keeping account of the mouse's X and Y
  * positions. Also, it allows for querying the different mouse buttons and
  * position through their respective methods.
@@ -20,49 +21,19 @@ class Mouse {
         /**
          * @brief Mouse button states array
          */
-        std::array<bool, CS_MOUSE_BUTTON_LAST + 1> m_Buttons{};
+        static std::array<bool, OB_MOUSE_BUTTON_LAST + 1> s_Buttons;
 
         /**
-         * @brief Pressed buttons for single-press detection
+         * @brief Buttons that were previously pressed
          */
-        std::vector<int> m_PressedButtons;
+        static std::vector<int> s_PreviousButtons;
 
         /**
          * @brief Current mouse position
          */
-        glm::vec2 m_Position{0.0f, 0.0f};
-
-    private:
-        /**
-         * @brief Construct a new Mouse.
-         *
-         * This constructor is private in order to facilitate the singleton
-         * design pattern the class follows.
-         */
-        Mouse() = default;
-
-        /**
-         * @brief Destroy the Mouse object.
-         */
-        ~Mouse() = default;
-
-        /**
-         * @brief Delete copy constructor and assignment operator
-         */
-        Mouse(const Mouse&) = delete;
-        Mouse& operator=(const Mouse&) = delete;
+        static glm::vec2 s_Position;
 
     public:
-        /**
-         * @brief Get the singleton instance of the Mouse class.
-         *
-         * This function provides access to the singleton instance of the
-         * Mouse class using Meyer's singleton pattern.
-         *
-         * @return Reference to the singleton instance of the Mouse class.
-         */
-        static Mouse& getInstance();
-
         /**
          * @brief Registers a mouse action.
          *
@@ -73,7 +44,7 @@ class Mouse {
          * the event.
          * @param action The action that triggered the event.
          */
-        void registerAction(int button, int action);
+        static void RegisterAction(int button, int action);
 
         /**
          * @brief Registers a mouse movement.
@@ -87,7 +58,7 @@ class Mouse {
          * @param newY The new Y position of the mouse, relative to the game
          * window.
          */
-        void registerMove(double newX, double newY);
+        static void RegisterMove(double newX, double newY);
 
         /**
          * @brief Checks if a mouse button is currently being pressed down.
@@ -95,15 +66,16 @@ class Mouse {
          * @param button The keycode representing the mouse button to check.
          * @return True if the mouse button is being held down, false otherwise.
          */
-        bool isButtonDown(int button) const;
+        static bool IsButtonDown(int button);
 
         /**
-         * @brief Checks if a mouse button has been pressed.
+         * @brief Checks if a mouse button has been pressed this frame.
          *
          * @param button The keycode representing the mouse button to check.
-         * @return True if the mouse button has been pressed, false otherwise.
+         * @return True if the mouse button was just pressed this frame, false
+         * otherwise.
          */
-        bool isButtonPressed(int button);
+        static bool IsButtonPressed(int button);
 
         /**
          * @brief Get the current mouse position.
@@ -113,7 +85,13 @@ class Mouse {
          *
          * @return The mouse's X and Y posititions in a Vector2.
          */
-        glm::vec2 getMousePosition() const;
+        static glm::vec2 GetMousePosition();
+
+        /**
+         * @brief Clears the just-pressed state for end of frame processing.
+         * This should be called at the end of each frame.
+         */
+        static void EndFrame();
 };
 }  // namespace Obelisk
 

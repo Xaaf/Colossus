@@ -2,6 +2,7 @@
 #include "Obelisk/Core/Time.h"
 #include "Obelisk/Input/InputCodes.h"
 #include "Obelisk/Input/Keyboard.h"
+#include "Obelisk/Input/Mouse.h"
 #include "Obelisk/ObeliskAPI.h"
 #include "Obelisk/Renderer/Mesh.h"
 #include "Obelisk/Renderer/Shader.h"
@@ -118,19 +119,70 @@ void MyInit() {
 }
 
 void MyUpdate() {
-    // Simple camera orbit demonstration using proper delta time
-    static float time = 0.0f;
-    time += Obelisk::Time::GetDeltaTime();  // Frame-independent timing
+    // Check for manual camera control first
+    static bool manualControl = false;
+    glm::vec3 cameraMovement(0.0f);
+    float moveSpeed = 3.0f;  // Units per second
 
-    // Orbit the camera around the cube
-    float radius = 4.0f;      // Increased radius for better view of the cube
-    float orbitSpeed = 0.3f;  // Radians per second
-    float x = radius * cos(time * orbitSpeed);
-    float z = radius * sin(time * orbitSpeed);
-    float y = sin(time * 0.2f) * 1.0f;  // Add some vertical movement
+    // Check for WASD movement
+    if (Obelisk::Keyboard::IsKeyDown(OB_KEY_W)) {
+        // Move forward (toward the cube we're looking at)
+        glm::vec3 forward =
+            glm::normalize(glm::vec3(0.0f, 0.0f, 0.0f) - camera.GetPosition());
+        cameraMovement += forward * moveSpeed * Obelisk::Time::GetDeltaTime();
+        manualControl = true;
+    }
+    if (Obelisk::Keyboard::IsKeyDown(OB_KEY_S)) {
+        // Move backward (away from the cube)
+        glm::vec3 forward =
+            glm::normalize(glm::vec3(0.0f, 0.0f, 0.0f) - camera.GetPosition());
+        cameraMovement -= forward * moveSpeed * Obelisk::Time::GetDeltaTime();
+        manualControl = true;
+    }
+    if (Obelisk::Keyboard::IsKeyDown(OB_KEY_A)) {
+        // Strafe left
+        glm::vec3 forward =
+            glm::normalize(glm::vec3(0.0f, 0.0f, 0.0f) - camera.GetPosition());
+        glm::vec3 right =
+            glm::normalize(glm::cross(forward, glm::vec3(0.0f, 1.0f, 0.0f)));
+        cameraMovement -= right * moveSpeed * Obelisk::Time::GetDeltaTime();
+        manualControl = true;
+    }
+    if (Obelisk::Keyboard::IsKeyDown(OB_KEY_D)) {
+        // Strafe right
+        glm::vec3 forward =
+            glm::normalize(glm::vec3(0.0f, 0.0f, 0.0f) - camera.GetPosition());
+        glm::vec3 right =
+            glm::normalize(glm::cross(forward, glm::vec3(0.0f, 1.0f, 0.0f)));
+        cameraMovement += right * moveSpeed * Obelisk::Time::GetDeltaTime();
+        manualControl = true;
+    }
 
-    camera.SetPosition(glm::vec3(x, y, z));
-    camera.LookAt(glm::vec3(0.0f, 0.0f, 0.0f));  // Always look at the cube
+    // Toggle between manual and automatic control when spacebar is pressed
+    if (Obelisk::Keyboard::IsKeyPressed(OB_KEY_SPACE)) {
+        manualControl = !manualControl;
+        LOG_INFO("SPACEBAR TOGGLE! Manual control: {}",
+                 manualControl ? "ON" : "OFF");
+    }
+
+    if (manualControl) {
+        // Apply manual camera movement
+        camera.SetPosition(camera.GetPosition() + cameraMovement);
+    } else {
+        // Automatic camera orbit demonstration using proper delta time
+        static float time = 0.0f;
+        time += Obelisk::Time::GetDeltaTime();  // Frame-independent timing
+
+        // Orbit the camera around the cube
+        float radius = 4.0f;  // Increased radius for better view of the cube
+        float orbitSpeed = 0.3f;  // Radians per second
+        float x = radius * cos(time * orbitSpeed);
+        float z = radius * sin(time * orbitSpeed);
+        float y = sin(time * 0.2f) * 1.0f;  // Add some vertical movement
+
+        camera.SetPosition(glm::vec3(x, y, z));
+        camera.LookAt(glm::vec3(0.0f, 0.0f, 0.0f));  // Always look at the cube
+    }
 
     // Slowly rotate the cube to show different faces
     float rotationSpeed = 15.0f;  // degrees per second

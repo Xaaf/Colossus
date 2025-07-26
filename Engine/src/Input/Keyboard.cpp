@@ -1,48 +1,52 @@
 #include "Obelisk/Input/Keyboard.h"
 #include <algorithm>
+#include "Obelisk/Logging/Log.h"
 
 namespace Obelisk {
 
-Keyboard& Keyboard::getInstance() {
-    static Keyboard instance;
-    return instance;
-}
+// Static member definitions
+std::array<bool, OB_KEY_LAST + 1> Keyboard::s_Keys{};
+std::vector<int> Keyboard::s_PreviousKeys{};
 
-void Keyboard::registerAction(int key, int action) {
+void Keyboard::RegisterAction(int key, int action) {
     // Bounds checking
-    if (key < 0 || key > CS_KEY_LAST) {
+    if (key < 0 || key > OB_KEY_LAST) {
         LOG_WARN("Invalid key: {}", key);
         return;
     }
 
-    m_Keys[key] = action != CS_RELEASE;
+    s_Keys[key] = action != OB_RELEASE;
 
-    auto it = std::find(m_PressedKeys.begin(), m_PressedKeys.end(), key);
-    if (action == CS_RELEASE && it != m_PressedKeys.end()) {
-        m_PressedKeys.erase(it);
+    auto it = std::find(s_PreviousKeys.begin(), s_PreviousKeys.end(), key);
+    if (action == OB_RELEASE && it != s_PreviousKeys.end()) {
+        // Key was released, remove from previous keys
+        s_PreviousKeys.erase(it);
+        LOG_INFO("Key {} released, removed from previous keys", key);
     }
 }
 
-bool Keyboard::isKeyDown(int key) const {
-    if (key < 0 || key > CS_KEY_LAST) {
+bool Keyboard::IsKeyDown(int key) {
+    if (key < 0 || key > OB_KEY_LAST) {
+        LOG_WARN("Invalid key: {}", key);
         return false;
     }
-    return m_Keys[key];
+
+    return s_Keys[key];
 }
 
-bool Keyboard::isKeyPressed(int key) {
-    if (key < 0 || key > CS_KEY_LAST) {
+bool Keyboard::IsKeyPressed(int key) {
+    if (key < 0 || key > OB_KEY_LAST) {
+        LOG_WARN("Invalid key: {}", key);
         return false;
     }
 
-    if (!m_Keys[key]) return false;
-
-    auto it = std::find(m_PressedKeys.begin(), m_PressedKeys.end(), key);
-    if (it != m_PressedKeys.end()) {
+    auto it = std::find(s_PreviousKeys.begin(), s_PreviousKeys.end(), key);
+    if (it != s_PreviousKeys.end()) {
+        // Key was previously pressed, but not this frame
         return false;
     }
 
-    m_PressedKeys.push_back(key);
+    s_PreviousKeys.push_back(key);
     return true;
 }
 }  // namespace Obelisk

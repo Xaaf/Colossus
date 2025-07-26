@@ -1,56 +1,60 @@
 #include "Obelisk/Input/Mouse.h"
 #include <algorithm>
+#include "Obelisk/Logging/Log.h"
 
 namespace Obelisk {
 
-Mouse& Mouse::getInstance() {
-    static Mouse instance;
-    return instance;
-}
+// Static member definitions
+std::array<bool, OB_MOUSE_BUTTON_LAST + 1> Mouse::s_Buttons{};
+std::vector<int> Mouse::s_PreviousButtons{};
+glm::vec2 Mouse::s_Position{0.0f, 0.0f};
 
-void Mouse::registerAction(int button, int action) {
+void Mouse::RegisterAction(int button, int action) {
     // Bounds checking
-    if (button < 0 || button > CS_MOUSE_BUTTON_LAST) {
+    if (button < 0 || button > OB_MOUSE_BUTTON_LAST) {
         LOG_WARN("Invalid mouse button: {}", button);
         return;
     }
-    m_Buttons[button] = action != CS_RELEASE;
+
+    s_Buttons[button] = action != OB_RELEASE;
 
     auto it =
-        std::find(m_PressedButtons.begin(), m_PressedButtons.end(), button);
-    if (action == CS_RELEASE && it != m_PressedButtons.end()) {
-        m_PressedButtons.erase(it);
+        std::find(s_PreviousButtons.begin(), s_PreviousButtons.end(), button);
+    if (action == OB_RELEASE && it != s_PreviousButtons.end()) {
+        // Button was released, remove from previous buttons
+        s_PreviousButtons.erase(it);
+        LOG_INFO("Mouse button {} released, removed from previous buttons",
+                 button);
     }
 }
 
-void Mouse::registerMove(double newX, double newY) {
-    m_Position.x = static_cast<float>(newX);
-    m_Position.y = static_cast<float>(newY);
+void Mouse::RegisterMove(double newX, double newY) {
+    s_Position.x = static_cast<float>(newX);
+    s_Position.y = static_cast<float>(newY);
 }
 
-bool Mouse::isButtonDown(int button) const {
-    if (button < 0 || button > CS_MOUSE_BUTTON_LAST) {
+bool Mouse::IsButtonDown(int button) {
+    if (button < 0 || button > OB_MOUSE_BUTTON_LAST) {
         return false;
     }
-    return m_Buttons[button];
+    return s_Buttons[button];
 }
 
-bool Mouse::isButtonPressed(int button) {
-    if (button < 0 || button > CS_MOUSE_BUTTON_LAST) {
+bool Mouse::IsButtonPressed(int button) {
+    if (button < 0 || button > OB_MOUSE_BUTTON_LAST) {
         return false;
     }
-
-    if (!m_Buttons[button]) return false;
 
     auto it =
-        std::find(m_PressedButtons.begin(), m_PressedButtons.end(), button);
-    if (it != m_PressedButtons.end()) {
+        std::find(s_PreviousButtons.begin(), s_PreviousButtons.end(), button);
+    if (it != s_PreviousButtons.end()) {
+        // Button was previously pressed, but not this frame
         return false;
     }
 
-    m_PressedButtons.push_back(button);
+    s_PreviousButtons.push_back(button);
     return true;
 }
 
-glm::vec2 Mouse::getMousePosition() const { return m_Position; }
+glm::vec2 Mouse::GetMousePosition() { return s_Position; }
 }  // namespace Obelisk

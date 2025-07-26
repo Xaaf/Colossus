@@ -6,7 +6,6 @@
 #include "Obelisk/Scene/Scene.h"
 #include "stb_image.h"
 
-
 namespace Obelisk {
 Window::~Window() {
     if (m_Window) {
@@ -54,19 +53,18 @@ int Window::Create(int width, int height, const std::string& title) {
         });
 
     // Set input callbacks
-    glfwSetKeyCallback(m_Window, [](GLFWwindow* window, int key, int scancode,
-                                    int action, int mods) {
-        Keyboard::getInstance().registerAction(key, action);
-    });
+    glfwSetKeyCallback(m_Window,
+                       [](GLFWwindow* window, int key, int scancode, int action,
+                          int mods) { Keyboard::RegisterAction(key, action); });
 
     glfwSetMouseButtonCallback(
         m_Window, [](GLFWwindow* window, int button, int action, int mods) {
-            Mouse::getInstance().registerAction(button, action);
+            Mouse::RegisterAction(button, action);
         });
 
     glfwSetCursorPosCallback(m_Window,
                              [](GLFWwindow* window, double xpos, double ypos) {
-                                 Mouse::getInstance().registerMove(xpos, ypos);
+                                 Mouse::RegisterMove(xpos, ypos);
                              });
 
     glEnable(GL_DEPTH_TEST);
