@@ -1,4 +1,5 @@
 #include "Obelisk/ObeliskAPI.h"
+#include "Obelisk/Core/Time.h"
 
 #define STB_IMAGE_IMPLEMENTATION
 #include <stb_image.h>
@@ -25,7 +26,10 @@ void ObeliskAPI::SetShutdownCallback(std::function<void()> callback) {
 void ObeliskAPI::Init(int width, int height, const char* title) {
     LOG_INFO("Initializing Obelisk Engine...");
 
-    // Initialize AssetManager first
+    // Initialize Time system first
+    Time::Initialize();
+
+    // Initialize AssetManager
     AssetManager::Initialize("assets");
     LOG_INFO(AssetManager::GetDebugInfo());
 
@@ -45,6 +49,9 @@ void ObeliskAPI::Run() {
     LOG_INFO("Running Obelisk Engine...");
 
     while (!m_Window->ShouldClose()) {
+        // Update time system each frame
+        Time::Update();
+
         if (m_UpdateCallback) {
             m_UpdateCallback();
         }
